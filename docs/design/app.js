@@ -16,10 +16,11 @@
 
   var B = 'w-10 h-10 sm:w-11 sm:h-11 rounded-full grid place-items-center transition-all ';
   var isPerangkat = window.location.pathname.indexOf('perangkat') !== -1;
+  var isGrafik = window.location.pathname.indexOf('grafik') !== -1;
   var navItems = [
-    { id: 'grid', label: 'Dashboard', url: 'index.html', active: !isPerangkat },
+    { id: 'grid', label: 'Dashboard', url: 'index.html', active: !isPerangkat && !isGrafik },
     { id: 'cpu', label: 'Perangkat Sensor', url: 'perangkat.html', active: isPerangkat },
-    { id: 'chart', label: 'Grafik Tren' },
+    { id: 'chart', label: 'Grafik Tren', url: 'grafik.html', active: isGrafik },
     { id: 'tower', label: 'Stasiun Pesisir' },
     { id: 'shield', label: 'Tim Pengelola' },
     { id: 'cal', label: 'Log Riwayat' }

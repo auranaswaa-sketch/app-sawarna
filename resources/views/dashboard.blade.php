@@ -21,9 +21,9 @@
             </a>
 
             <!-- 3. Analytics / Charts -->
-            <button aria-label="Analisis Tren" title="Grafik Tren & Riwayat Cuaca" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
+            <a href="{{ route('analytics.index') }}" aria-label="Analisis Tren" title="Grafik Tren & Riwayat Cuaca" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
                 <i class="fa-solid fa-chart-line text-base sm:text-lg"></i>
-            </button>
+            </a>
 
             <!-- 4. Weather Stations / Locations -->
             <button aria-label="Stasiun Pesisir" title="Peta Titik Sensor Sawarna" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">

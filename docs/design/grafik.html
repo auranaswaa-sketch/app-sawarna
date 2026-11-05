@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grafik Tren & Riwayat Cuaca - Pantai Sawarna</title>
+<!-- Google Fonts: Plus Jakarta Sans & DM Sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- Tailwind CSS Standalone CDN -->
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{
+        sans:['"Plus Jakarta Sans"','"DM Sans"','system-ui','sans-serif']
+      },
+      colors:{
+        bg:'var(--bg)',
+        card:'var(--card)',
+        ink:'var(--ink)',
+        mute:'var(--mute)',
+        line:'var(--line)',
+        sea:'var(--sea)',
+        deep:'var(--deep)',
+        sky:'var(--sky)',
+        tint:'var(--tint)',
+        dark:'var(--dark)',
+        ok:'var(--ok)',
+        okbg:'var(--okbg)',
+        warn:'var(--warn)',
+        warnbg:'var(--warnbg)',
+        bad:'var(--bad)',
+        badbg:'var(--badbg)'
+      },
+      boxShadow:{
+        soft:'0 4px 20px -2px rgba(18, 38, 28, 0.04)',
+        card:'0 10px 30px -4px rgba(18, 38, 28, 0.05)',
+        floating:'0 20px 40px -10px rgba(18, 38, 28, 0.12)'
+      }
+    }
+  }
+}
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-bg text-ink font-sans text-sm min-h-screen">
+<div class="max-w-[1560px] mx-auto p-3 sm:p-5 lg:p-6 grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)]">
+
+  <!-- Sidebar Capsule Nav (diisi app.js) -->
+  <aside id="side" aria-label="Menu Navigasi" class="flex lg:flex-col items-center justify-between lg:justify-start gap-2.5 sm:gap-3 bg-card rounded-[32px] sm:rounded-[36px] p-2 sm:p-2.5 text-mute shadow-soft border border-line/60 overflow-x-auto lg:overflow-visible sticky top-3 z-30"></aside>
+
+  <!-- Main Canvas -->
+  <main class="grid gap-3.5 sm:gap-4 min-w-0">
+
+    <!-- Header Bar -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-tint text-sea grid place-items-center shrink-0 shadow-soft">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-ink">Grafik Tren & Riwayat Cuaca</h1>
+            <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-okbg text-ok">
+              <i class="fa-solid fa-circle text-[6px]"></i> Resolusi 1 Jam
+            </span>
+          </div>
+          <p class="text-mute text-xs sm:text-[13.5px] mt-0.5">Analisis time-series multi-parameter, distribusi arah angin (wind rose), dan riwayat agregasi cuaca pesisir.</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap md:flex-nowrap">
+        <div class="inline-flex p-1 rounded-full bg-card border border-line/70 shadow-soft">
+          <button onclick="setRng('24')" id="r-24" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-card text-ink shadow-sm">24 Jam</button>
+          <button onclick="setRng('168')" id="r-168" class="px-2.5 py-0.5 rounded-full text-xs font-semibold text-mute hover:text-ink">7 Hari</button>
+        </div>
+
+        <button onclick="alert('Mengunduh berkas riwayat cuaca sawarna.csv...')" class="flex items-center gap-2 bg-gradient-to-br from-sea to-deep text-white font-bold text-xs rounded-[10px] px-4 py-2 shadow-sm hover:opacity-95 transition-opacity">
+          <i class="fa-solid fa-file-arrow-down text-xs"></i>
+          <span>Ekspor CSV</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Baris 1: Filter Parameter Pills -->
+    <section class="bg-card rounded-[20px] p-2 sm:p-2.5 border border-line/60 shadow-soft">
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+        <button onclick="setTab('suhu')" id="tab-suhu" class="t-btn px-3 py-1 rounded-full text-xs font-semibold bg-dark text-white shadow-sm">Suhu Udara (°C)</button>
+        <button onclick="setTab('kelembapan')" id="tab-kelembapan" class="t-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line">Kelembapan (%)</button>
+        <button onclick="setTab('tekanan')" id="tab-tekanan" class="t-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line">Tekanan (hPa)</button>
+        <button onclick="setTab('hujan')" id="tab-hujan" class="t-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line">Curah Hujan (mm/j)</button>
+        <button onclick="setTab('angin')" id="tab-angin" class="t-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line">Kecepatan Angin (km/j)</button>
+      </div>
+    </section>
+
+    <!-- Baris 2: 4 Kartu Metrik Ringkasan -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <span class="text-[13px] text-mute font-medium">Nilai Maksimum</span>
+        <div class="my-2"><b class="text-[26px] font-bold tracking-tight text-ink" id="t-max">30,8 °C</b><span class="text-xs text-mute block">13.15 WIB (Terik)</span></div>
+        <div class="pt-2 border-t border-line/60 text-[11px] text-mute flex justify-between"><span>Puncak</span><span class="text-warn font-semibold">Ekstrem Harian</span></div>
+      </div>
+
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <span class="text-[13px] text-mute font-medium">Rata-rata Teragregasi</span>
+        <div class="my-2"><b class="text-[26px] font-bold tracking-tight text-ink" id="t-avg">28,1 °C</b><span class="text-xs text-ok font-semibold block">+0.8 °C vs kemarin</span></div>
+        <div class="pt-2 border-t border-line/60 text-[11px] text-mute flex justify-between"><span>Sampel 24 Jam</span><span class="text-ok font-semibold">24 Titik Data</span></div>
+      </div>
+
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <span class="text-[13px] text-mute font-medium">Nilai Minimum</span>
+        <div class="my-2"><b class="text-[26px] font-bold tracking-tight text-ink" id="t-min">23,9 °C</b><span class="text-xs text-mute block">04.30 WIB (Dini Hari)</span></div>
+        <div class="pt-2 border-t border-line/60 text-[11px] text-mute flex justify-between"><span>Titik Terendah</span><span class="text-ink font-semibold">Kondisi Sejuk</span></div>
+      </div>
+
+      <div class="bg-gradient-to-br from-sea to-deep rounded-[20px] p-4 sm:p-5 text-white shadow-soft flex flex-col justify-between">
+        <span class="text-[13px] text-white/80 font-medium">Batas Waspada</span>
+        <div class="my-2"><b class="text-lg font-bold tracking-tight block">Batas Waspada 35 °C</b><span class="text-xs text-white/90 block">Kondisi Terpantau Aman</span></div>
+        <div class="pt-2 border-t border-white/20 text-[11px] text-white/80 flex justify-between"><span>Aturan: FR-13</span><span class="underline cursor-pointer">Sorot Garis</span></div>
+      </div>
+    </section>
+
+    <!-- Baris 3: Kurva SVG & Wind Rose -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+      <!-- Kurva SVG (8 Kolom) -->
+      <div class="lg:col-span-8 bg-card rounded-[20px] p-4 sm:p-6 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-line/60">
+            <div>
+              <h2 class="text-base sm:text-[17px] font-bold text-ink">Kurva Time-Series Resolusi 1 Jam</h2>
+              <p class="text-mute text-xs mt-0.5">Visualisasi kurva kontinu agregasi rata-rata dengan arsiran gradien.</p>
+            </div>
+            <div class="flex items-center gap-3 text-xs">
+              <span class="flex items-center gap-1.5 text-ink font-medium"><span class="w-3 h-0.5 bg-sea rounded-full"></span> Nilai Sensor</span>
+              <span class="flex items-center gap-1.5 text-warn font-medium"><span class="w-3 h-0.5 border-b-2 border-dashed border-warn"></span> Ambang Waspada</span>
+            </div>
+          </div>
+
+          <div class="relative w-full h-[260px]">
+            <svg class="w-full h-full overflow-visible" viewBox="0 0 560 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="g-sea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--sky)" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="var(--sky)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+
+              <line x1="36" y1="30" x2="530" y2="30" stroke="var(--line)" stroke-width="1"/>
+              <line x1="36" y1="67" x2="530" y2="67" stroke="var(--line)" stroke-width="1"/>
+              <line x1="36" y1="105" x2="530" y2="105" stroke="var(--line)" stroke-width="1"/>
+              <line x1="36" y1="142" x2="530" y2="142" stroke="var(--line)" stroke-width="1"/>
+              <line x1="36" y1="180" x2="530" y2="180" stroke="var(--line)" stroke-width="1"/>
+
+              <!-- Threshold Line -->
+              <line x1="36" y1="30" x2="530" y2="30" stroke="var(--warn)" stroke-width="1.8" stroke-dasharray="5 4"/>
+
+              <!-- Area & Line -->
+              <path id="chart-area" d="M 36 170 L 60 185 L 90 180 L 115 150 L 140 165 L 180 120 L 210 115 L 260 40 L 300 30 L 330 65 L 360 110 L 390 95 L 430 155 L 470 155 L 490 100 L 530 110 L 530 180 L 36 180 Z" fill="url(#g-sea)"/>
+              <path id="chart-line" d="M 36 170 L 60 185 L 90 180 L 115 150 L 140 165 L 180 120 L 210 115 L 260 40 L 300 30 L 330 65 L 360 110 L 390 95 L 430 155 L 470 155 L 490 100 L 530 110" fill="none" stroke="var(--sea)" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="flex items-center justify-between px-6 mt-2 text-[11px] text-mute font-medium">
+            <span>-23 j</span><span>-19 j</span><span>-15 j</span><span>-11 j</span><span>-7 j</span><span>-3 j</span><span>Sekarang</span>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-line/60 flex items-center justify-between text-xs text-mute">
+          <span>Model Interpolasi: Spline Bezier Halus</span>
+          <span class="font-semibold text-ink">Sensor SHT31 Pro-Grade</span>
+        </div>
+      </div>
+
+      <!-- Wind Rose (4 Kolom) -->
+      <div class="lg:col-span-4 bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-line/60">
+            <h2 class="text-base sm:text-[17px] font-bold text-ink">Wind Rose (Arah Angin)</h2>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-warnbg text-warn">34 km/j</span>
+          </div>
+
+          <div class="flex flex-col items-center justify-center my-3">
+            <div class="relative w-[140px] h-[140px] rounded-full border-[3px] border-line flex items-center justify-center">
+              <span class="absolute top-1 text-[11px] font-bold text-ink">U</span>
+              <span class="absolute right-2 text-[11px] font-bold text-ink">T</span>
+              <span class="absolute bottom-1 text-[11px] font-bold text-ink">S</span>
+              <span class="absolute left-2 text-[11px] font-bold text-ink">B</span>
+
+              <div class="w-full h-full absolute inset-0 flex items-center justify-center transform rotate-[225deg]">
+                <div class="w-1.5 h-[60px] bg-gradient-to-t from-transparent via-sea to-sea rounded-full flex flex-col items-center">
+                  <div class="w-3.5 h-3.5 bg-sea rotate-45 transform -translate-y-1 rounded-sm"></div>
+                </div>
+              </div>
+
+              <div class="w-10 h-10 rounded-full bg-card border border-line shadow-soft flex flex-col items-center justify-center z-10">
+                <span class="text-xs font-bold text-ink">SW</span>
+                <span class="text-[9px] text-mute font-mono">225°</span>
+              </div>
+            </div>
+            <p class="text-xs font-semibold text-ink mt-2">Arah Dominan: <b class="text-sea">Barat Daya (SW)</b> (38,5%)</p>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between text-[11px] text-mute"><span>< 10 km/j (Tenang)</span><b class="text-ink">15%</b></div>
+            <div class="w-full bg-line/80 h-1.5 rounded-full overflow-hidden"><div class="bg-ok h-full rounded-full" style="width: 15%"></div></div>
+            <div class="flex justify-between text-[11px] text-mute"><span>10 - 25 km/j (Sedang)</span><b class="text-ink">46,5%</b></div>
+            <div class="w-full bg-line/80 h-1.5 rounded-full overflow-hidden"><div class="bg-sea h-full rounded-full" style="width: 46.5%"></div></div>
+            <div class="flex justify-between text-[11px] text-mute"><span>25 - 35 km/j (Kencang)</span><b class="text-ink">30,5%</b></div>
+            <div class="w-full bg-line/80 h-1.5 rounded-full overflow-hidden"><div class="bg-warn h-full rounded-full" style="width: 30.5%"></div></div>
+          </div>
+        </div>
+
+        <div class="pt-3 mt-3 border-t border-line/60 text-xs text-mute flex justify-between">
+          <span>Frekuensi 8 Penjuru</span>
+          <span class="text-sea font-bold cursor-pointer hover:underline">Detail Vektor &rarr;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Baris 4: Tabel Rekap Agregasi -->
+    <section class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-line/60">
+        <div>
+          <h2 class="text-base sm:text-[17px] font-bold text-ink">Rekapitulasi Agregasi Data Historis (FR-09)</h2>
+          <p class="text-mute text-xs mt-0.5">Data teragregasi per jam: rata-rata, min, maks, dan akumulasi curah hujan.</p>
+        </div>
+        <button onclick="alert('Mengunduh CSV rekapitulasi...')" class="text-xs font-semibold text-sea hover:underline flex items-center gap-1.5">
+          <i class="fa-solid fa-download"></i> Unduh Data Lengkap
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-line/80 text-mute font-semibold text-[11.5px]">
+              <th class="pb-2.5 pl-2">Periode Waktu</th>
+              <th class="pb-2.5">Suhu (°C)</th>
+              <th class="pb-2.5">Kelembapan</th>
+              <th class="pb-2.5">Tekanan</th>
+              <th class="pb-2.5">Curah Hujan</th>
+              <th class="pb-2.5">Kecepatan Angin</th>
+              <th class="pb-2.5">Arah Angin</th>
+              <th class="pb-2.5 pr-2 text-right">Status Kualitas</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line/60">
+            <tr class="hover:bg-bg/60">
+              <td class="py-3 pl-2 font-semibold text-ink">4 Nov 2026, 09.00 - 10.00</td>
+              <td class="py-3 font-medium text-ink"><b>29,4 °C</b> <span class="text-[10px] text-mute">(28,8 - 30,1)</span></td>
+              <td class="py-3 font-medium text-ink">84 %</td>
+              <td class="py-3 font-medium text-ink">1008,6 hPa</td>
+              <td class="py-3 font-medium text-ink">3,2 mm</td>
+              <td class="py-3 font-medium text-ink"><b>24,2 km/j</b> (Maks 34)</td>
+              <td class="py-3 font-medium text-ink">225° (BD)</td>
+              <td class="py-3 pr-2 text-right"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-warnbg text-warn">Waspada Angin</span></td>
+            </tr>
+            <tr class="hover:bg-bg/60">
+              <td class="py-3 pl-2 font-semibold text-ink">4 Nov 2026, 08.00 - 09.00</td>
+              <td class="py-3 font-medium text-ink"><b>28,6 °C</b> <span class="text-[10px] text-mute">(27,9 - 29,2)</span></td>
+              <td class="py-3 font-medium text-ink">86 %</td>
+              <td class="py-3 font-medium text-ink">1008,9 hPa</td>
+              <td class="py-3 font-medium text-ink">1,1 mm</td>
+              <td class="py-3 font-medium text-ink"><b>21,5 km/j</b> (Maks 28)</td>
+              <td class="py-3 font-medium text-ink">210° (BD)</td>
+              <td class="py-3 pr-2 text-right"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal</span></td>
+            </tr>
+            <tr class="hover:bg-bg/60">
+              <td class="py-3 pl-2 font-semibold text-ink">4 Nov 2026, 07.00 - 08.00</td>
+              <td class="py-3 font-medium text-ink"><b>27,3 °C</b> <span class="text-[10px] text-mute">(26,5 - 28,0)</span></td>
+              <td class="py-3 font-medium text-ink">89 %</td>
+              <td class="py-3 font-medium text-ink">1009,2 hPa</td>
+              <td class="py-3 font-medium text-ink">0,0 mm</td>
+              <td class="py-3 font-medium text-ink"><b>18,2 km/j</b> (Maks 24)</td>
+              <td class="py-3 font-medium text-ink">195° (S)</td>
+              <td class="py-3 pr-2 text-right"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
+

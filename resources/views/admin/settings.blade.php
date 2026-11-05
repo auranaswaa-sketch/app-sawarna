@@ -16,12 +16,12 @@
             </a>
 
             <!-- 2. Wallet / Hardware Nodes -->
-            <button aria-label="Perangkat IoT" title="Perangkat & Sensor Lapangan" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all" onclick="switchTab('hardware')">
+            <a href="{{ route('devices.index') }}" aria-label="Perangkat IoT" title="Perangkat & Sensor Lapangan" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
                 <i class="fa-solid fa-microchip text-base sm:text-lg"></i>
-            </button>
+            </a>
 
             <!-- 3. Analytics / Charts -->
-            <a href="{{ route('dashboard') }}#analytics" aria-label="Analisis Tren" title="Grafik Tren & Riwayat Cuaca" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
+            <a href="{{ route('analytics.index') }}" aria-label="Analisis Tren" title="Grafik Tren & Riwayat Cuaca" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
                 <i class="fa-solid fa-chart-line text-base sm:text-lg"></i>
             </a>
 
