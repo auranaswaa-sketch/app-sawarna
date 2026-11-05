@@ -90,25 +90,29 @@ Proyek ini dibangun menggunakan standar teknologi modern:
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Fitur Utama & Prinsip Operator-First
 
-1. **Dashboard Metrik Cuaca Real-Time**:
-   - Suhu Udara (°C), Kelembapan Relatif (%), Tekanan Barometrik (hPa).
-   - Curah Hujan (mm/jam) dengan visualisasi busur radial (*arc gauge*).
-   - Kecepatan Angin (km/jam) dan Kompas Arah Angin (*wind direction dial* 360°).
-2. **Sistem Peringatan Dini (Early Warning System)**:
-   - 3 level peringatan otomatis: **Aman** (*Ok*), **Waspada** (*Warning*), dan **Bahaya** (*Critical*).
-   - Banner darurat dinamis dan pencatatan riwayat alert.
-3. **Grafik Tren & Analisis Historis**:
-   - Grafik area interaktif dengan interpolasi kurva halus (24 jam & 7 hari).
-   - Kalkulasi otomatis nilai Maksimum, Rata-rata, dan Minimum.
-   - Garis panduan batas waspada (*threshold line*).
-4. **Monitoring Kesehatan Perangkat IoT (Hardware Health)**:
-   - Pantauan daya panel surya dan sisa persentase baterai Edge Node.
-   - Kekuatan sinyal radio LoRa (RSSI dBm) dan rasio paket diterima (*Packet Delivery Ratio*).
-   - Kapasitas penyimpanan lokal Sink Node dan status antrean sinkronisasi (*backfill queue*).
-5. **Ketahanan Jaringan Pesisir (Offline-First Resilience)**:
-   - Dukungan penerimaan data tertunda (*batch backfill*) saat internet 4G kantor pengelola kembali menyala, dengan pencegahan duplikasi data (*idempotency*).
+Aplikasi ini didesain khusus agar ramah digunakan oleh **Operator Lapangan, Penjaga Pantai (Balawista/Life Guard), dan Pengurus POKDARWIS**:
+
+1. **Aturan 3 Detik (*The 3-Second Rule*)**:
+   - Dalam 3 detik, operator langsung tahu apakah pantai saat ini **Aman**, **Waspada**, atau **Bahaya**.
+   - Banner status keselamatan pantai berukuran besar diletakkan di posisi paling atas layar.
+2. **Bebas Jargon Teknis (*Zero-Jargon Policy*)**:
+   - Seluruh istilah rumit diterjemahkan ke bahasa sehari-hari: *"Baterai 78% (Mengisi dari Surya)"*, *"Sinyal Sangat Kuat"*, *"Internet 4G Aktif"*.
+3. **Navigasi Berlabel Jelas (*Clear Labeled Navigation*)**:
+   - Sidebar navigasi dilengkapi teks label bahasa Indonesia (*Beranda Cuaca, Kondisi Sensor, Atur Batas Peringatan, Profil Petugas*) agar tidak membingungkan operator.
+4. **4 Metrik Utama Cuaca Berskala Besar**:
+   - Angka super besar dan terbaca jelas di bawah terik sinar matahari pantai:
+     - 💨 **Kecepatan Angin** (km/jam) & Arah Mata Angin
+     - 🌧️ **Curah Hujan** (mm/jam) & Status Banjir Rob
+     - 🌡️ **Suhu Udara** (°C) & Kelembapan
+     - 🌊 **Tekanan Barometrik** (hPa) & Kondisi Ombak Laut
+5. **Aksi Tanggap Cepat Peringatan Dini**:
+   - Tombol satu klik: *"Kirim Peringatan WA ke Pengelola"* dan *"Konfirmasi Paham"*.
+6. **Pemantauan Kesehatan Alat Sensor di Pantai**:
+   - Status baterai panel surya di bibir pantai dan koneksi internet posko kantor desa.
+7. **Ketahanan Jaringan Pesisir (Offline-First Resilience)**:
+   - Data otomatis disimpan di posko saat internet pesisir terputus dan disinkronkan kembali saat koneksi pulih (*auto-backfill*).
 
 ---
 

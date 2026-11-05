@@ -6,57 +6,77 @@
 <div class="bg-bg text-ink min-h-[calc(100vh-2.5rem)] flex flex-col justify-between" id="analytics-root">
 
     <!-- Top Wrapper: Grid Layout (Sidebar Capsule + Main Canvas) -->
-    <div class="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
 
-        <!-- ================= SIDEBAR CAPSULE ================= -->
-        <aside class="flex lg:flex-col items-center justify-between lg:justify-start gap-2.5 sm:gap-3 bg-card rounded-[32px] sm:rounded-[36px] p-2 sm:p-2.5 shadow-soft border border-line/60 overflow-x-auto lg:overflow-visible sticky top-3 z-30">
-            <!-- 1. Grid / Dashboard -->
-            <a href="{{ route('dashboard') }}" aria-label="Dashboard Beranda" title="Dashboard Beranda" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-solid fa-table-cells-large text-base sm:text-lg"></i>
-            </a>
+        <!-- ================= SIDEBAR NAVIGASI RAMAH OPERATOR ================= -->
+        <aside class="bg-card rounded-[24px] p-3 sm:p-4 shadow-soft border border-line flex flex-col gap-2 sticky top-3 z-30">
+            <!-- Logo & Posko Identitas -->
+            <div class="flex items-center gap-3 px-2 py-2 mb-2 border-b border-line/60">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sea to-deep text-white grid place-items-center font-extrabold text-sm shadow-soft shrink-0">
+                    SW
+                </div>
+                <div class="min-w-0">
+                    <h2 class="font-extrabold text-sm text-ink truncate leading-tight">Posko Sawarna</h2>
+                    <span class="text-[11px] text-mute font-medium truncate block">Pantai Ciantir · POKDARWIS</span>
+                </div>
+            </div>
 
-            <!-- 2. Wallet / Hardware Nodes -->
-            <a href="{{ route('devices.index') }}" aria-label="Perangkat IoT" title="Perangkat & Sensor Lapangan" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-solid fa-microchip text-base sm:text-lg"></i>
-            </a>
+            <!-- Menu Navigasi dengan Ikon + Teks Jelas -->
+            <nav class="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0" aria-label="Menu Utama">
+                <!-- 1. Beranda -->
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
+                    <i class="fa-solid fa-house text-base w-5 text-center text-sea"></i>
+                    <span>Beranda Cuaca</span>
+                </a>
 
-            <!-- 3. Analytics / Charts (ACTIVE) -->
-            <a href="{{ route('analytics.index') }}" aria-label="Analisis Tren" title="Grafik Tren & Riwayat Cuaca" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-dark text-white grid place-items-center shadow-md transition-all hover:scale-105 active:scale-95">
-                <i class="fa-solid fa-chart-line text-base sm:text-lg"></i>
-            </a>
+                <!-- 2. Alat Sensor -->
+                <a href="{{ route('devices.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
+                    <i class="fa-solid fa-tower-broadcast text-base w-5 text-center text-sea"></i>
+                    <span>Kondisi Sensor</span>
+                </a>
 
-            <!-- 4. Weather Stations / Locations -->
-            <button aria-label="Stasiun Pesisir" title="Peta Titik Sensor Sawarna" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-solid fa-tower-broadcast text-base sm:text-lg"></i>
-            </button>
+                <!-- 3. Grafik & Riwayat (Active) -->
+                <a href="{{ route('analytics.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-dark text-white shadow-sm shrink-0 transition-all">
+                    <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
+                    <span>Grafik & Riwayat</span>
+                </a>
 
-            <!-- 5. Users / Tim Pengelola -->
-            <a href="{{ route('profile.index') }}" aria-label="Profil Administrator" title="Detail Profil Pengelola & Akses" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-solid fa-user-shield text-sm sm:text-base"></i>
-            </a>
+                <!-- 4. Pengaturan -->
+                <a href="{{ route('settings.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
+                    <i class="fa-solid fa-sliders text-base w-5 text-center text-sea"></i>
+                    <span>Atur Batas Peringatan</span>
+                </a>
 
-            <!-- 6. Calendar / Log Riwayat -->
-            <button aria-label="Log & Peringatan" title="Log Peringatan Dini" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-regular fa-calendar-check text-base sm:text-lg"></i>
-            </button>
+                <!-- 5. Profil Petugas -->
+                <a href="{{ route('profile.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
+                    <i class="fa-solid fa-user-shield text-base w-5 text-center text-sea"></i>
+                    <span>Profil Petugas</span>
+                </a>
+            </nav>
 
-            <!-- Flexible Spacer on Desktop -->
-            <div class="hidden lg:block flex-1 min-h-[40px]"></div>
+            <!-- Card Bantuan Petugas Lapangan -->
+            <div class="hidden lg:block mt-6 p-3.5 rounded-2xl bg-tint/70 border border-line/60">
+                <div class="flex items-center gap-2 text-sea font-bold text-xs mb-1">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    <span>Unduh Data Cuaca</span>
+                </div>
+                <p class="text-[11px] text-mute mb-2">Ekspor catatan cuaca mingguan untuk laporan atau arsip.</p>
+                <a href="{{ route('analytics.export') }}" class="block w-full text-center py-2 px-3 rounded-lg bg-card border border-line text-ink text-xs font-bold hover:bg-tint transition-all">
+                    Unduh CSV
+                </a>
+            </div>
 
-            <!-- 7. Settings -->
-            <a href="{{ route('settings.index') }}" aria-label="Pengaturan" title="Pengaturan Ambang Batas Sensor" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-solid fa-gear text-base sm:text-lg"></i>
-            </a>
-
-            <!-- 8. Logout -->
-            <button aria-label="Keluar" title="Keluar Sesi" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-bad grid place-items-center transition-all">
-                <i class="fa-solid fa-arrow-right-from-bracket text-base sm:text-lg"></i>
-            </button>
-
-            <!-- 9. Avatar / Location Profile Badge -->
-            <a href="{{ route('profile.index') }}" title="Profil Administrator Sawarna" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-gradient-to-br from-sea to-deep border-2 border-white/70 shadow-sm grid place-items-center text-white font-bold text-xs cursor-pointer hover:ring-2 ring-sea transition-all">
-                <span>SW</span>
-            </a>
+            <!-- Petugas Sedang Piket -->
+            <div class="hidden lg:flex items-center gap-2.5 pt-3 mt-auto border-t border-line/60 px-1">
+                <div class="w-8 h-8 rounded-full bg-tint text-sea grid place-items-center font-bold text-xs shrink-0">
+                    AF
+                </div>
+                <div class="min-w-0">
+                    <span class="text-[11px] text-mute block leading-none">Petugas Jaga:</span>
+                    <b class="text-xs text-ink truncate block mt-0.5">Ahmad Fauzi</b>
+                </div>
+                <span class="w-2.5 h-2.5 rounded-full bg-ok ml-auto" title="Online"></span>
+            </div>
         </aside>
 
         <!-- ================= MAIN CONTENT ================= -->

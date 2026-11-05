@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Detail Profil Administrator - Cuaca Pantai Sawarna</title>
+<title>Profil Petugas Posko - Cuaca Pantai Sawarna</title>
 <!-- Google Fonts: Plus Jakarta Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,334 +13,78 @@
 <!-- Tailwind CSS Standalone CDN -->
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: { sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'] },
-      colors: {
-        bg: 'var(--bg)', card: 'var(--card)', ink: 'var(--ink)', mute: 'var(--mute)',
-        line: 'var(--line)', sea: 'var(--sea)', deep: 'var(--deep)', sky: 'var(--sky)',
-        tint: 'var(--tint)', dark: 'var(--dark)', ok: 'var(--ok)', okbg: 'var(--okbg)',
-        warn: 'var(--warn)', warnbg: 'var(--warnbg)', bad: 'var(--bad)', badbg: 'var(--badbg)'
-      }
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{ sans:['"Plus Jakarta Sans"','system-ui','sans-serif'] },
+      colors:{
+        bg:'var(--bg)',card:'var(--card)',ink:'var(--ink)',mute:'var(--mute)',
+        line:'var(--line)',sea:'var(--sea)',deep:'var(--deep)',sky:'var(--sky)',
+        tint:'var(--tint)',dark:'var(--dark)',ok:'var(--ok)',okbg:'var(--okbg)',
+        warn:'var(--warn)',warnbg:'var(--warnbg)',bad:'var(--bad)',badbg:'var(--badbg)'
+      },
+      boxShadow:{ soft:'0 4px 20px -2px rgba(13, 39, 56, 0.05)' }
     }
   }
 }
 </script>
 <link rel="stylesheet" href="style.css">
-<style>
-body { font-family: "Plus Jakarta Sans", sans-serif; }
-.squircle-card { background-color: var(--card); border-radius: 20px; transition: all 0.2s ease; }
-.squircle-card:hover { box-shadow: 0 10px 25px -4px rgba(13, 47, 68, 0.06); }
-</style>
 </head>
-<body class="bg-bg text-ink text-sm min-h-screen">
-<div class="max-w-[1500px] mx-auto p-3 sm:p-5 lg:p-6 grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)] items-start">
+<body class="bg-bg text-ink font-sans text-sm min-h-screen">
+<div class="max-w-[1560px] mx-auto p-3 sm:p-5 lg:p-6 grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)] items-start">
 
-  <!-- ================= SIDEBAR CAPSULE ================= -->
-  <nav id="side" aria-label="Menu" class="flex lg:flex-col items-center gap-2.5 bg-card rounded-[36px] p-2.5 text-mute overflow-auto border border-line sticky top-4 z-20">
-    <a href="index.html" title="Dashboard Beranda" class="w-11 h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-      <i class="fa-solid fa-table-cells-large text-base"></i>
-    </a>
-    <a href="settings.html" title="Perangkat IoT" class="w-11 h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-      <i class="fa-solid fa-microchip text-base"></i>
-    </a>
-    <a href="index.html" title="Grafik Tren" class="w-11 h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-      <i class="fa-solid fa-chart-line text-base"></i>
-    </a>
-    <button title="Titik Stasiun" class="w-11 h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all" onclick="switchProfileTab('stations')">
-      <i class="fa-solid fa-tower-broadcast text-base"></i>
-    </button>
-    <!-- Tim Pengelola / Profil (Active) -->
-    <button title="Profil Pengelola" class="w-11 h-11 rounded-full bg-dark text-white grid place-items-center shadow-md">
-      <i class="fa-solid fa-user-shield text-base"></i>
-    </button>
-    <div class="hidden lg:block flex-1 min-h-[40px]"></div>
-    <a href="settings.html" title="Pengaturan" class="w-11 h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-      <i class="fa-solid fa-gear text-base"></i>
-    </a>
-    <a href="index.html" title="Keluar Sesi" class="w-11 h-11 rounded-full text-mute hover:bg-tint hover:text-bad grid place-items-center transition-all">
-      <i class="fa-solid fa-arrow-right-from-bracket text-base"></i>
-    </a>
-    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-sea to-deep text-white font-bold text-[13px] grid place-items-center shadow-sm ring-2 ring-sea">
-      SW
+  <!-- ================= SIDEBAR RAMAH OPERATOR ================= -->
+  <aside class="bg-card rounded-[24px] p-3 sm:p-4 shadow-soft border border-line flex flex-col gap-2 sticky top-3 z-30">
+    <div class="flex items-center gap-3 px-2 py-2 mb-2 border-b border-line/60">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sea to-deep text-white grid place-items-center font-extrabold text-sm shadow-soft shrink-0">
+        SW
+      </div>
+      <div class="min-w-0">
+        <h2 class="font-extrabold text-sm text-ink truncate leading-tight">Posko Sawarna</h2>
+        <span class="text-[11px] text-mute font-medium truncate block">Pantai Ciantir · POKDARWIS</span>
+      </div>
     </div>
-  </nav>
 
-  <!-- ================= MAIN PROFILE ================= -->
+    <nav class="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0">
+      <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0">
+        <i class="fa-solid fa-house text-base w-5 text-center text-sea"></i>
+        <span>Beranda Cuaca</span>
+      </a>
+      <a href="perangkat.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0">
+        <i class="fa-solid fa-tower-broadcast text-base w-5 text-center text-sea"></i>
+        <span>Kondisi Sensor</span>
+      </a>
+      <a href="settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0">
+        <i class="fa-solid fa-sliders text-base w-5 text-center text-sea"></i>
+        <span>Atur Batas Peringatan</span>
+      </a>
+      <a href="profile.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-dark text-white shadow-sm shrink-0">
+        <i class="fa-solid fa-user-shield text-base w-5 text-center"></i>
+        <span>Profil Petugas</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ================= KONTEN UTAMA ================= -->
   <main class="flex flex-col gap-4 min-w-0">
-
-    <!-- Header -->
-    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-full bg-tint text-sea grid place-items-center shadow-sm">
-          <i class="fa-solid fa-id-card-clip text-xl"></i>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold tracking-tight text-ink">Profil Administrator</h1>
-          <p class="text-mute text-[13.5px]">Identitas penanggung jawab operasional stasiun cuaca Pantai Sawarna</p>
-        </div>
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card rounded-[20px] p-4 border border-line shadow-soft">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-extrabold text-ink">Profil Petugas Posko Cuaca</h1>
+        <p class="text-mute text-xs sm:text-sm mt-0.5">Identitas penanggung jawab posko pantau Pantai Ciantir hari ini</p>
       </div>
-      <div class="flex items-center gap-2.5">
-        <a href="index.html" class="px-3.5 py-2 rounded-[10px] bg-card border border-line text-xs font-semibold text-mute hover:text-ink">
-          <i class="fa-solid fa-arrow-left mr-1.5"></i>Dashboard
-        </a>
-        <a href="settings.html" class="px-3.5 py-2 rounded-[10px] bg-card border border-line text-xs font-semibold text-mute hover:text-sea">
-          <i class="fa-solid fa-gear mr-1.5"></i>Pengaturan
-        </a>
-      </div>
+      <a href="index.html" class="px-3.5 py-2 rounded-xl bg-card border border-line text-xs font-semibold text-mute hover:text-ink">Kembali ke Beranda</a>
     </header>
 
-    <!-- Hero Profile Squircle Card -->
-    <section class="squircle-card overflow-hidden border border-line">
-      <!-- Gradient Cover -->
-      <div class="h-28 sm:h-32 bg-gradient-to-r from-sea via-deep to-dark relative p-4 flex items-end justify-between">
-        <div class="text-white/90 text-xs font-medium bg-black/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
-          <i class="fa-solid fa-location-dot mr-1 text-sky"></i>Pos Pantau Ciantir (SW-NODE-01)
-        </div>
-        <span class="text-white/80 text-[11px]">Terdaftar sejak 12 Okt 2024</span>
-      </div>
-
-      <div class="p-4 sm:p-6 pt-0 relative">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-12 sm:-mt-14 mb-4">
-          <div class="flex items-end gap-4">
-            <div class="relative">
-              <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-sea to-deep border-4 border-card shadow-md grid place-items-center text-white font-extrabold text-2xl sm:text-3xl">
-                AF
-              </div>
-              <span class="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-ok border-2 border-card" title="Online"></span>
-            </div>
-            <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <h2 class="text-xl sm:text-2xl font-bold">Ahmad Fauzi, S.Kom.</h2>
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-dark text-white">Super Admin</span>
-              </div>
-              <p class="text-mute text-xs sm:text-sm mt-0.5">Koordinator Mitigasi & Operasional Posko Cuaca</p>
-              <p class="text-mute/80 text-xs mt-0.5">POKDARWIS Sawarna & Tim Riset Abdimas Telkom University</p>
-            </div>
-          </div>
-          <button onclick="saveProfile()" class="px-4 py-2 rounded-[10px] bg-gradient-to-br from-sea to-deep text-white text-xs font-bold hover:opacity-95">
-            <i class="fa-solid fa-floppy-disk mr-1.5"></i>Simpan Perubahan
-          </button>
-        </div>
-
-        <!-- 4 Stats Strip -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-line">
-          <div class="bg-bg rounded-xl p-3 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-tint text-sea grid place-items-center"><i class="fa-solid fa-calendar-check"></i></div>
-            <div><span class="text-mute text-xs block">Masa Tugas</span><b class="text-sm">388 Hari</b></div>
-          </div>
-          <div class="bg-bg rounded-xl p-3 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-warnbg text-warn grid place-items-center"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div><span class="text-mute text-xs block">Alert Ditangani</span><b class="text-sm">42 Kejadian</b></div>
-          </div>
-          <div class="bg-bg rounded-xl p-3 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-tint text-sea grid place-items-center"><i class="fa-solid fa-microchip"></i></div>
-            <div><span class="text-mute text-xs block">Node Diawasi</span><b class="text-sm">3 Perangkat</b></div>
-          </div>
-          <div class="bg-bg rounded-xl p-3 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-okbg text-ok grid place-items-center"><i class="fa-solid fa-signal"></i></div>
-            <div><span class="text-mute text-xs block">Uptime Stasiun</span><b class="text-sm text-ok">99,4%</b></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab Pill Bar -->
-    <section class="bg-card rounded-[20px] p-2 border border-line">
-      <nav class="flex items-center gap-2 overflow-x-auto">
-        <button onclick="switchProfileTab('info')" id="ptab-btn-info" class="ptab-pill active flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-dark text-white">
-          <i class="fa-solid fa-id-card"></i>
-          <span>Informasi Pribadi</span>
-        </button>
-        <button onclick="switchProfileTab('stations')" id="ptab-btn-stations" class="ptab-pill flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-mute hover:bg-tint hover:text-ink">
-          <i class="fa-solid fa-tower-broadcast"></i>
-          <span>Penugasan Node & Wilayah</span>
-        </button>
-        <button onclick="switchProfileTab('security')" id="ptab-btn-security" class="ptab-pill flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-mute hover:bg-tint hover:text-ink">
-          <i class="fa-solid fa-shield-halved"></i>
-          <span>Keamanan & Sesi</span>
-        </button>
-        <button onclick="switchProfileTab('activity')" id="ptab-btn-activity" class="ptab-pill flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-mute hover:bg-tint hover:text-ink">
-          <i class="fa-solid fa-clock-rotate-left"></i>
-          <span>Riwayat Log Aktivitas</span>
-        </button>
-      </nav>
-    </section>
-
-    <!-- Toast Banner -->
-    <div id="save-toast" class="hidden items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-okbg border border-ok/30 text-ok transition-all">
-      <div class="flex items-center gap-2.5">
-        <i class="fa-solid fa-circle-check text-base"></i>
-        <span class="text-xs sm:text-sm font-semibold">Data profil dan preferensi berhasil disimpan!</span>
-      </div>
-      <button onclick="document.getElementById('save-toast').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-
-    <!-- TAB 1: INFORMASI PRIBADI -->
-    <div id="ptab-content-info" class="ptab-panel flex flex-col gap-4">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <!-- Biodata Form -->
-        <div class="lg:col-span-2 squircle-card p-5 border border-line">
-          <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-user-pen text-sea"></i>Biodata Pengelola Lapangan</h3>
-          <div class="space-y-3">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label class="text-xs text-mute font-semibold block mb-1">Nama Lengkap</label>
-                <input type="text" value="Ahmad Fauzi, S.Kom." class="w-full bg-card rounded-lg p-2 text-xs font-bold border border-line">
-              </div>
-              <div>
-                <label class="text-xs text-mute font-semibold block mb-1">Jabatan Operasional</label>
-                <input type="text" value="Koordinator Mitigasi Posko Cuaca" readonly class="w-full bg-bg rounded-lg p-2 text-xs text-mute border border-line">
-              </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label class="text-xs text-mute font-semibold block mb-1">Email Resmi</label>
-                <input type="email" value="admin.sawarna@telkomuniversity.ac.id" class="w-full bg-card rounded-lg p-2 text-xs font-semibold border border-line">
-              </div>
-              <div>
-                <label class="text-xs text-mute font-semibold block mb-1">Nomor WhatsApp Darurat</label>
-                <input type="text" value="+62 812-9876-5432" class="w-full bg-card rounded-lg p-2 text-xs font-semibold border border-line">
-              </div>
-            </div>
-            <div>
-              <label class="text-xs text-mute font-semibold block mb-1">Alamat Posko / Kantor Pengelola</label>
-              <textarea rows="2" class="w-full bg-card rounded-lg p-2 text-xs border border-line font-medium">Jl. Pantai Ciantir No. 8, Desa Sawarna, Kec. Bayah, Kab. Lebak, Banten 42393</textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- Notification Preferences -->
-        <div class="squircle-card p-5 border border-line flex flex-col justify-between">
-          <div>
-            <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-bell text-sea"></i>Preferensi Peringatan</h3>
-            <div class="space-y-2.5 text-xs">
-              <div class="p-2.5 rounded-xl bg-bg flex items-center justify-between">
-                <span>WhatsApp Darurat (Siaga/Bahaya)</span>
-                <span class="text-ok font-bold bg-okbg px-2 py-0.5 rounded-full">Aktif</span>
-              </div>
-              <div class="p-2.5 rounded-xl bg-bg flex items-center justify-between">
-                <span>Grup Alert Telegram</span>
-                <span class="text-ok font-bold bg-okbg px-2 py-0.5 rounded-full">Aktif</span>
-              </div>
-              <div class="p-2.5 rounded-xl bg-bg flex items-center justify-between">
-                <span>Peringatan Baterai Lemah Node</span>
-                <span class="text-ok font-bold bg-okbg px-2 py-0.5 rounded-full">Aktif</span>
-              </div>
-              <div class="p-2.5 rounded-xl bg-bg flex items-center justify-between">
-                <span>Email Laporan Harian</span>
-                <span class="text-mute font-bold bg-card px-2 py-0.5 rounded-full border border-line">Nonaktif</span>
-              </div>
-            </div>
-          </div>
-          <span class="text-xs text-mute mt-3 block">Prioritas: Respon Cepat Lapangan</span>
-        </div>
+    <div class="bg-card rounded-[20px] p-5 border border-line shadow-soft flex items-center gap-4">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sea to-deep text-white grid place-items-center text-2xl font-black">AF</div>
+      <div>
+        <h2 class="text-xl font-black text-ink">Ahmad Fauzi</h2>
+        <p class="text-xs text-mute mt-0.5">Koordinator Pos Pantau Pantai Ciantir · POKDARWIS</p>
+        <span class="text-xs font-bold text-ok bg-okbg px-2 py-0.5 rounded-full inline-block mt-1">Sedang Bertugas</span>
       </div>
     </div>
-
-    <!-- TAB 2: STASIUN -->
-    <div id="ptab-content-stations" class="ptab-panel hidden flex-col gap-4">
-      <div class="squircle-card p-5 border border-line">
-        <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-tower-broadcast text-sea"></i>Cakupan Pengawasan Node Pesisir</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="p-4 rounded-xl bg-bg border border-line">
-            <span class="text-xs font-bold text-ok bg-okbg px-2 py-0.5 rounded-full">Normal / Terhubung</span>
-            <h4 class="font-bold text-sm mt-2">Pantai Ciantir (Utama)</h4>
-            <p class="text-xs text-mute mt-1">Suhu, Kelembapan, Tekanan, Hujan, Angin</p>
-          </div>
-          <div class="p-4 rounded-xl bg-bg border border-line">
-            <span class="text-xs font-bold text-warn bg-warnbg px-2 py-0.5 rounded-full">Waspada Angin</span>
-            <h4 class="font-bold text-sm mt-2">Pantai Tanjung Layar</h4>
-            <p class="text-xs text-mute mt-1">Anemometer & Arah Angin Samudra</p>
-          </div>
-          <div class="p-4 rounded-xl bg-bg border border-line">
-            <span class="text-xs font-bold text-ok bg-okbg px-2 py-0.5 rounded-full">Sinkron 100%</span>
-            <h4 class="font-bold text-sm mt-2">Kantor Pengelola Desa</h4>
-            <p class="text-xs text-mute mt-1">Modem 4G, Gateway LoRa, Buffer Storage</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: KEAMANAN -->
-    <div id="ptab-content-security" class="ptab-panel hidden flex-col gap-4">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div class="squircle-card p-5 border border-line">
-          <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-lock text-sea"></i>Perbarui Kata Sandi</h3>
-          <div class="space-y-3">
-            <input type="password" placeholder="Kata sandi saat ini" class="w-full bg-card rounded-lg p-2 text-xs border border-line">
-            <input type="password" placeholder="Kata sandi baru (min. 8 karakter)" class="w-full bg-card rounded-lg p-2 text-xs border border-line">
-            <button onclick="alert('Kata sandi berhasil diperbarui!')" class="w-full py-2 bg-dark text-white rounded-lg text-xs font-bold">Simpan Kata Sandi</button>
-          </div>
-        </div>
-        <div class="squircle-card p-5 border border-line">
-          <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-laptop-code text-sea"></i>Sesi Login Aktif</h3>
-          <div class="space-y-2 text-xs">
-            <div class="p-2.5 rounded-lg bg-bg flex justify-between items-center">
-              <div><b>Desktop Windows 11 · Chrome</b><span class="block text-mute text-[11px]">Kantor Desa Sawarna · Sesi Ini</span></div>
-              <span class="text-ok font-bold">Aktif</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-bg flex justify-between items-center">
-              <div><b>Apple iPhone 15 Pro · Safari</b><span class="block text-mute text-[11px]">Jaringan 4G Sawarna · 2 jam lalu</span></div>
-              <button onclick="alert('Sesi diputus!')" class="text-bad font-semibold hover:underline">Putuskan</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: AKTIVITAS -->
-    <div id="ptab-content-activity" class="ptab-panel hidden flex-col gap-4">
-      <div class="squircle-card p-5 border border-line">
-        <h3 class="text-base font-bold mb-3 flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-sea"></i>Audit Log Aktivitas Terakhir</h3>
-        <div class="space-y-2.5 text-xs">
-          <div class="p-3 rounded-xl bg-bg flex justify-between items-center">
-            <div><b>Mengubah Ambang Batas Kecepatan Angin</b><span class="block text-mute text-[11px]">Batas waspada diatur ke 30 km/jam sesuai instruksi BMKG</span></div>
-            <span class="text-mute">Hari ini, 09.15 WIB</span>
-          </div>
-          <div class="p-3 rounded-xl bg-bg flex justify-between items-center">
-            <div><b>Mengonfirmasi Alert Hujan Lebat (Acknowledge)</b><span class="block text-mute text-[11px]">Status hujan 18 mm/jam disebarkan ke grup relawan</span></div>
-            <span class="text-mute">3 Nov, 16.15 WIB</span>
-          </div>
-          <div class="p-3 rounded-xl bg-bg flex justify-between items-center">
-            <div><b>Pemeriksaan Lapangan Sensor Anemometer</b><span class="block text-mute text-[11px]">Pembersihan kerak garam laut pada baling-baling</span></div>
-            <span class="text-mute">1 Nov, 11.20 WIB</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </main>
+
 </div>
-
-<script>
-function switchProfileTab(tabId) {
-  document.querySelectorAll('.ptab-panel').forEach(p => p.classList.add('hidden'));
-  document.querySelectorAll('.ptab-pill').forEach(b => {
-    b.classList.remove('active', 'bg-dark', 'text-white');
-    b.classList.add('text-mute');
-  });
-  const p = document.getElementById('ptab-content-' + tabId);
-  const b = document.getElementById('ptab-btn-' + tabId);
-  if (p) p.classList.remove('hidden');
-  if (b) {
-    b.classList.add('active', 'bg-dark', 'text-white');
-    b.classList.remove('text-mute');
-  }
-}
-
-function saveProfile() {
-  const t = document.getElementById('save-toast');
-  t.classList.remove('hidden');
-  t.classList.add('flex');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  setTimeout(() => {
-    t.classList.add('hidden');
-    t.classList.remove('flex');
-  }, 4000);
-}
-</script>
 </body>
 </html>
-
