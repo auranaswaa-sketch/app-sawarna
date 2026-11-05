@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Perangkat & Sensor Lapangan - Cuaca Mikro Sawarna</title>
+<!-- Google Fonts: Plus Jakarta Sans & DM Sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- Tailwind CSS Standalone CDN -->
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{
+        sans:['"Plus Jakarta Sans"','"DM Sans"','system-ui','sans-serif']
+      },
+      colors:{
+        bg:'var(--bg)',
+        card:'var(--card)',
+        ink:'var(--ink)',
+        mute:'var(--mute)',
+        line:'var(--line)',
+        sea:'var(--sea)',
+        deep:'var(--deep)',
+        sky:'var(--sky)',
+        tint:'var(--tint)',
+        dark:'var(--dark)',
+        ok:'var(--ok)',
+        okbg:'var(--okbg)',
+        warn:'var(--warn)',
+        warnbg:'var(--warnbg)',
+        bad:'var(--bad)',
+        badbg:'var(--badbg)'
+      },
+      boxShadow:{
+        soft:'0 4px 20px -2px rgba(18, 38, 28, 0.04)',
+        card:'0 10px 30px -4px rgba(18, 38, 28, 0.05)',
+        floating:'0 20px 40px -10px rgba(18, 38, 28, 0.12)'
+      }
+    }
+  }
+}
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-bg text-ink font-sans text-sm min-h-screen">
+<div class="max-w-[1560px] mx-auto p-3 sm:p-5 lg:p-6 grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)]">
+
+  <!-- Sidebar Capsule Nav (diisi app.js) -->
+  <aside id="side" aria-label="Menu Navigasi" class="flex lg:flex-col items-center justify-between lg:justify-start gap-2.5 sm:gap-3 bg-card rounded-[32px] sm:rounded-[36px] p-2 sm:p-2.5 text-mute shadow-soft border border-line/60 overflow-x-auto lg:overflow-visible sticky top-3 z-30"></aside>
+
+  <!-- Main Canvas -->
+  <main class="grid gap-3.5 sm:gap-4 min-w-0">
+
+    <!-- Header Bar -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Chip Hardware Icon -->
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-tint text-sea grid place-items-center shrink-0 shadow-soft">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+            <path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-ink">Perangkat & Sensor Lapangan</h1>
+            <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-okbg text-ok">
+              <i class="fa-solid fa-circle text-[6px]"></i> 2 Node Online
+            </span>
+          </div>
+          <p class="text-mute text-xs sm:text-[13.5px] mt-0.5">Infrastruktur IoT Pesisir: Edge Node, Gateway LoRa SX1302 & Kalibrasi Sensor Cuaca</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap md:flex-nowrap">
+        <!-- Ping Radio CTA -->
+        <button onclick="alert('Memindai jaringan LoRa AS923... Status: EDGE-01 stabil (-104 dBm, SNR +6.5 dB)')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card hover:bg-tint text-ink border border-line/70 text-xs font-semibold shadow-soft transition-all">
+          <i class="fa-solid fa-tower-cell text-sea text-xs"></i>
+          <span>Pindai Sinyal LoRa</span>
+        </button>
+
+        <!-- Sync Button -->
+        <button onclick="alert('Sinkronisasi batch data cloud berhasil dijalankan!')" class="flex items-center gap-2 bg-gradient-to-br from-sea to-deep text-white font-bold text-xs rounded-[10px] px-4 py-2 shadow-sm hover:opacity-95 transition-opacity">
+          <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+          <span>Sinkronkan Sekarang</span>
+        </button>
+
+        <!-- Search Bar Capsule -->
+        <div class="hidden xl:flex items-center bg-card rounded-full pl-4 pr-1 py-1 shadow-soft border border-line/70 w-[200px]">
+          <input type="text" placeholder="Cari sensor..." class="bg-transparent text-xs text-ink placeholder-mute focus:outline-none w-full">
+          <button class="w-8 h-8 rounded-full bg-dark text-white grid place-items-center shrink-0">
+            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Baris 1: 4 Kartu Metrik Kesehatan Sistem IoT -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <!-- 1. Node Infrastruktur -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] text-mute font-medium">Infrastruktur Node</span>
+          <div class="w-9 h-9 rounded-full bg-tint text-sea grid place-items-center">
+            <i class="fa-solid fa-network-wired text-sm"></i>
+          </div>
+        </div>
+        <div class="my-2.5">
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[26px] font-bold tracking-tight text-ink">2</span>
+            <span class="text-xs text-mute font-medium">/ 2 Unit Aktif</span>
+          </div>
+          <span class="text-[12px] text-ok font-semibold inline-flex items-center gap-1 mt-0.5">
+            <i class="fa-solid fa-circle-check text-[11px]"></i> 100% Online (Latensi 182 ms)
+          </span>
+        </div>
+        <div class="pt-2 border-t border-line/60 flex items-center justify-between text-[11px] text-mute">
+          <span>EDGE-01 Pantai</span>
+          <span class="font-bold text-ink">SINK-01 Kantor</span>
+        </div>
+      </div>
+
+      <!-- 2. Catu Daya Surya -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] text-mute font-medium">Catu Daya Edge</span>
+          <div class="w-9 h-9 rounded-full bg-tint text-sea grid place-items-center">
+            <i class="fa-solid fa-solar-panel text-sm"></i>
+          </div>
+        </div>
+        <div class="my-2.5">
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[26px] font-bold tracking-tight text-ink">78</span>
+            <span class="text-[13px] font-medium text-mute">%</span>
+            <span class="text-xs text-mute font-normal ml-1">(12,4 V)</span>
+          </div>
+          <div class="w-full bg-line/80 h-1.5 rounded-full mt-2 overflow-hidden">
+            <div class="bg-sea h-full rounded-full" style="width: 78%"></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-line/60 flex items-center justify-between text-[11px] text-mute">
+          <span>Solar: 17,9 V</span>
+          <span class="font-semibold text-ok">Charging Normal</span>
+        </div>
+      </div>
+
+      <!-- 3. Tautan LoRa -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] text-mute font-medium">Kualitas Sinyal LoRa</span>
+          <div class="w-9 h-9 rounded-full bg-tint text-sea grid place-items-center">
+            <i class="fa-solid fa-radio text-sm"></i>
+          </div>
+        </div>
+        <div class="my-2.5">
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[26px] font-bold tracking-tight text-ink">-104</span>
+            <span class="text-xs text-mute font-medium ml-1">dBm</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="text-xs text-mute">SNR +6,5 dB</span>
+            <span class="text-mute text-xs">·</span>
+            <span class="text-xs font-semibold text-ok">PDR 99,4%</span>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-line/60 flex items-center justify-between text-[11px] text-mute">
+          <span>Jarak: 1,42 km</span>
+          <span class="font-bold text-ink">AS923 (Ch 3)</span>
+        </div>
+      </div>
+
+      <!-- 4. Antrean Backfill (Hero Gradient) -->
+      <div class="bg-gradient-to-br from-sea to-deep rounded-[20px] p-4 sm:p-5 text-white shadow-soft flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] text-white/80 font-medium">Antrean Backfill Cloud</span>
+          <div class="w-9 h-9 rounded-full bg-white/15 text-white grid place-items-center">
+            <i class="fa-solid fa-database text-sm"></i>
+          </div>
+        </div>
+        <div class="my-2.5">
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[26px] font-bold tracking-tight">38</span>
+            <span class="text-xs text-white/80 font-medium">paket data antre</span>
+          </div>
+          <span class="text-[12px] text-white/90 inline-flex items-center gap-1.5 mt-0.5">
+            <i class="fa-solid fa-shield-halved text-xs"></i> Tersimpan aman di MicroSD
+          </span>
+        </div>
+        <div class="pt-2 border-t border-white/20 flex items-center justify-between text-[11px] text-white/80">
+          <span>Sinkron: 12 menit lalu</span>
+          <span class="font-bold underline cursor-pointer hover:text-white" onclick="alert('Mengirim batch 38 telemetri ke cloud...')">Kirim Batch</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Baris 2: Detail Dua Unit Node IoT Lapangan (EDGE-01 vs SINK-01) -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <!-- EDGE-01 -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div>
+          <div class="flex items-start justify-between gap-3 pb-3 border-b border-line/60">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-sea/10 text-sea">EDGE-01</span>
+                <h2 class="text-base sm:text-[17px] font-bold text-ink">Edge Node Pantai Sawarna</h2>
+              </div>
+              <p class="text-xs text-mute mt-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-sea"></i>
+                <span>Pos Pantau Pasir Putih, Pantai Sawarna (-6.9882° S, 106.3125° E)</span>
+              </p>
+            </div>
+            <div class="flex flex-col items-end shrink-0">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok flex items-center gap-1">
+                <i class="fa-solid fa-circle text-[5px]"></i> Online (Aktif)
+              </span>
+              <span class="text-[11px] text-mute mt-1">Last seen: 10 detik lalu</span>
+            </div>
+          </div>
+
+          <!-- Specs Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3.5">
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-microchip text-sea"></i>
+                <span>Pemroses & Radio</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">ESP32-S3 Dual-Core (240MHz, 8MB PSRAM)</p>
+              <p class="text-mute mt-1 text-[11px]">Semtech SX1262 LoRa 920-923 MHz</p>
+            </div>
+
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-bolt text-warn"></i>
+                <span>Catu Daya & Tegangan</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">Panel Surya 50W + MPPT Solar Controller</p>
+              <div class="flex items-center justify-between text-[11px] text-mute mt-1">
+                <span>Tegangan: <b class="text-ink">12,4 V</b></span>
+                <span>Solar: <b class="text-ok">17,9 V</b></span>
+              </div>
+            </div>
+
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-tower-broadcast text-sea"></i>
+                <span>Transmisi LoRa AS923</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">922.5 MHz (Channel 3 / SF10)</p>
+              <p class="text-mute mt-1 text-[11px]">RSSI: <b class="text-ink">-104 dBm</b> · Jarak: <b class="text-ink">1,42 km</b></p>
+            </div>
+
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-hard-drive text-sea"></i>
+                <span>Penyimpanan Buffer Lokal</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">MicroSD Industrial 16 GB</p>
+              <p class="text-mute mt-1 text-[11px]">Terpakai: <b class="text-ink">1,2 GB (7,5%)</b> · <span class="text-warn font-semibold">38 antrean</span></p>
+            </div>
+          </div>
+
+          <div class="space-y-1.5 pt-1 text-xs">
+            <div class="flex items-center justify-between text-mute">
+              <span>Persentase Kapasitas Baterai:</span>
+              <span class="font-bold text-ink">78%</span>
+            </div>
+            <div class="w-full bg-line/80 h-2 rounded-full overflow-hidden">
+              <div class="bg-sea h-full rounded-full" style="width: 78%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-2 pt-4 mt-3 border-t border-line/60">
+          <span class="text-[11px] text-mute">Dipasang: 12 Okt 2026</span>
+          <button onclick="alert('Uji transmisi ke EDGE-01 berhasil!')" class="px-3 py-1.5 rounded-[10px] bg-bg hover:bg-tint text-ink border border-line text-xs font-semibold transition-all">
+            <i class="fa-solid fa-satellite-dish text-sea mr-1"></i> Uji Transmisi
+          </button>
+        </div>
+      </div>
+
+      <!-- SINK-01 -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div>
+          <div class="flex items-start justify-between gap-3 pb-3 border-b border-line/60">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-dark/10 text-dark">SINK-01</span>
+                <h2 class="text-base sm:text-[17px] font-bold text-ink">Gateway & Sink Node Kantor</h2>
+              </div>
+              <p class="text-xs text-mute mt-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-sea"></i>
+                <span>Kantor Sekretariat Pokdarwis Sawarna (-6.9835° S, 106.3150° E)</span>
+              </p>
+            </div>
+            <div class="flex flex-col items-end shrink-0">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok flex items-center gap-1">
+                <i class="fa-solid fa-circle text-[5px]"></i> Online (Aktif)
+              </span>
+              <span class="text-[11px] text-mute mt-1">Last seen: 5 detik lalu</span>
+            </div>
+          </div>
+
+          <!-- Specs Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3.5">
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-server text-sea"></i>
+                <span>Edge Computing & Gateway</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">Raspberry Pi 4 Model B (Broadcom BCM2711, 4GB RAM)</p>
+              <p class="text-mute mt-1 text-[11px]">SX1302 Concentrator Hat + Antena 5.8 dBi</p>
+            </div>
+
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-plug text-sea"></i>
+                <span>Daya & Cadangan UPS</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">PLN 220V AC + Smart UPS 1000VA Backup</p>
+              <div class="flex items-center justify-between text-[11px] text-mute mt-1">
+                <span>Tegangan: <b class="text-ink">220 V AC</b></span>
+                <span>Baterai UPS: <b class="text-ok">100%</b></span>
+              </div>
+            </div>
+
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-signal text-sea"></i>
+                <span>Konektivitas Cloud & 4G</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">Modem 4G LTE Cat-4 Telkomsel + LAN Gigabit</p>
+              <p class="text-mute mt-1 text-[11px]">Signal: <b class="text-ink">-72 dBm</b> · PDR: <b class="text-ok">99,8%</b></p>
+            </div>
+
+            <div class="bg-bg/60 rounded-xl p-3 border border-line/50 text-xs">
+              <div class="flex items-center gap-1.5 text-mute font-semibold mb-1">
+                <i class="fa-solid fa-database text-sea"></i>
+                <span>Basis Data & Cache</span>
+              </div>
+              <p class="text-ink font-medium leading-snug">SSD NVMe 128 GB (SATA-to-USB3)</p>
+              <p class="text-mute mt-1 text-[11px]">SQLite Cache: <b class="text-ink">8,4 GB (6,5%)</b></p>
+            </div>
+          </div>
+
+          <div class="space-y-1.5 pt-1 text-xs">
+            <div class="flex items-center justify-between text-mute">
+              <span>Status Operasional Gateway:</span>
+              <span class="font-bold text-ink">Mosquitto MQTT v2.0 Aktif</span>
+            </div>
+            <div class="w-full bg-line/80 h-2 rounded-full overflow-hidden">
+              <div class="bg-ok h-full rounded-full" style="width: 100%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-2 pt-4 mt-3 border-t border-line/60">
+          <span class="text-[11px] text-mute">Dipasang: 10 Okt 2026</span>
+          <button onclick="alert('Memeriksa status broker MQTT dan koneksi 4G...') " class="px-3 py-1.5 rounded-[10px] bg-dark text-white text-xs font-semibold hover:opacity-90 transition-all">
+            Rincian Gateway
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Baris 3: Matriks Sensor Lapangan (7 Sensor) -->
+    <section class="bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 pb-3 border-b border-line/60">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-base sm:text-[17px] font-bold text-ink">Matriks & Kalibrasi Sensor Cuaca Lapangan</h2>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-okbg text-ok">7 Terpasang di EDGE-01</span>
+          </div>
+          <p class="text-mute text-xs mt-0.5">Spesifikasi parameter fisik, model pabrikan, formula kalibrasi (offset/faktor), dan pembacaan telemetri aktif.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="alert('Membuka panel kalibrasi sensor')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-gradient-to-br from-sea to-deep text-white font-bold text-xs shadow-sm hover:opacity-95 transition-opacity">
+            <i class="fa-solid fa-sliders text-xs"></i>
+            <span>Kalibrasi Sensor</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 7 Sensor Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5">
+        <!-- Sensor 1: Suhu -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-solid fa-temperature-half text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Suhu Udara</h3>
+                  <span class="text-[11px] text-mute block">SNS-TMP-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">29,4</span>
+                <span class="text-xs font-semibold text-mute">°C</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">Sensirion SHT31 Digital</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">I2C 0x44</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">-10 ~ 60 °C</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.00x + 0.0</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-mute">Akurasi ±0.2 °C</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Suhu Udara')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+
+        <!-- Sensor 2: Kelembapan -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-solid fa-droplet text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Kelembapan Relatif</h3>
+                  <span class="text-[11px] text-mute block">SNS-HUM-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">84</span>
+                <span class="text-xs font-semibold text-mute">%</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">Sensirion SHT31 RH</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">I2C 0x44</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">0 ~ 100 %</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.00x + 0.0</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-mute">Akurasi ±1.5 % RH</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Kelembapan')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+
+        <!-- Sensor 3: Tekanan Barometrik -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-solid fa-gauge-high text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Tekanan Barometrik</h3>
+                  <span class="text-[11px] text-mute block">SNS-PRS-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Stabil</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">1008,6</span>
+                <span class="text-xs font-semibold text-mute">hPa</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">Bosch BMP280</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">I2C 0x76</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">800 ~ 1100 hPa</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.00x + 0.4</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-mute">Akurasi ±0.12 hPa</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Tekanan')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+
+        <!-- Sensor 4: Curah Hujan -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-solid fa-cloud-showers-heavy text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Curah Hujan</h3>
+                  <span class="text-[11px] text-mute block">SNS-RNF-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">3,2</span>
+                <span class="text-xs font-semibold text-mute">mm/jam</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">Tipping Bucket TB-02</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">GPIO 14 (Pulse)</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">0 ~ 300 mm/jam</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.02x + 0.0</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-mute">Resolusi 0.2 mm/tip</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Sensor Hujan')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+
+        <!-- Sensor 5: Kecepatan Angin -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-solid fa-wind text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Kecepatan Angin</h3>
+                  <span class="text-[11px] text-mute block">SNS-WND-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-warnbg text-warn">Waspada</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">34,0</span>
+                <span class="text-xs font-semibold text-mute">km/jam</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">3-Cup Anemometer Opto</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">GPIO 27</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">0 ~ 150 km/jam</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.00x + 0.0</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-warn font-semibold">Ambang batas 30 km/jam</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Kecepatan Angin')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+
+        <!-- Sensor 6: Arah Angin -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-regular fa-compass text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Arah Angin</h3>
+                  <span class="text-[11px] text-mute block">SNS-DIR-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal (SW)</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">225</span>
+                <span class="text-xs font-semibold text-mute">° (Barat Daya)</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">Precision 8-Point Wind Vane</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">ADC1 CH4 (12-bit)</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">0 ~ 360°</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.00x - 5.0</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-mute">Akurasi ±2.5°</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Arah Angin')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+
+        <!-- Sensor 7: Radiasi UV -->
+        <div class="bg-bg/50 rounded-2xl p-4 border border-line/70 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center">
+                  <i class="fa-solid fa-sun text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-ink">Radiasi Sinar UV</h3>
+                  <span class="text-[11px] text-mute block">SNS-UV-01 · EDGE-01</span>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-warnbg text-warn">Tinggi</span>
+            </div>
+            <div class="bg-card rounded-xl p-3 border border-line/60 my-2.5 flex items-baseline justify-between">
+              <span class="text-xs text-mute font-medium">Pembacaan:</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold tracking-tight text-ink">6,8</span>
+                <span class="text-xs font-semibold text-mute">UVI</span>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs text-mute">
+              <div class="flex items-center justify-between"><span>Model:</span><span class="font-semibold text-ink">Vishay VEML6075 Spectral</span></div>
+              <div class="flex items-center justify-between"><span>Bus:</span><span class="font-mono text-[11px] text-ink">I2C 0x10</span></div>
+              <div class="flex items-center justify-between"><span>Rentang:</span><span class="text-ink">0 ~ 15 UVI</span></div>
+              <div class="flex items-center justify-between"><span>Kalibrasi:</span><span class="font-mono text-[11px] text-sea">y = 1.00x + 0.0</span></div>
+            </div>
+          </div>
+          <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between">
+            <span class="text-[11px] text-mute">Perlindungan Tabir Surya</span>
+            <span class="text-xs font-semibold text-sea cursor-pointer hover:underline" onclick="alert('Kalibrasi Sensor UV')">Ubah Kalibrasi</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Baris 4: Log Riwayat Perawatan & Payload JSON Telemetri -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- Riwayat Perawatan (7 Kolom) -->
+      <div class="lg:col-span-7 bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-line/60">
+            <div>
+              <h2 class="text-base sm:text-[17px] font-bold text-ink">Riwayat Perawatan & Pemeliharaan</h2>
+              <p class="text-mute text-xs mt-0.5">Catatan teknisi penanganan berkala sensor cuaca di pesisir Pantai Sawarna.</p>
+            </div>
+            <button onclick="alert('Membuka form pencatatan perawatan baru')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-dark text-white text-xs font-semibold hover:opacity-90 transition-all">
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span>Catat Perawatan</span>
+            </button>
+          </div>
+
+          <div class="divide-y divide-line/60">
+            <div class="py-3 flex flex-col sm:flex-row sm:items-start justify-between gap-2.5">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-tint text-sea grid place-items-center shrink-0 mt-0.5">
+                  <i class="fa-solid fa-wrench text-xs"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <b class="text-xs sm:text-sm font-semibold text-ink">Pembersihan Panel Surya & Box Enclosure IP67</b>
+                    <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-okbg text-ok">Selesai</span>
+                  </div>
+                  <p class="text-xs text-mute mt-1 leading-relaxed">Membersihkan kerak garam laut pada kaca solar panel 50W menggunakan air tawar. Pengecekan silikon seal karet enclosure box.</p>
+                  <div class="flex items-center gap-3 text-[11px] text-mute mt-1.5">
+                    <span><i class="fa-solid fa-hard-drive text-sea mr-1"></i>EDGE-01 (Pantai)</span>
+                    <span><i class="fa-solid fa-user-gear mr-1"></i>Rian Hidayat (Teknisi Abdimas Tel-U)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0 text-xs text-mute sm:self-start">
+                <span class="font-semibold text-ink block">28 Okt 2026</span>
+                <span class="text-[11px]">14.30 WIB</span>
+              </div>
+            </div>
+
+            <div class="py-3 flex flex-col sm:flex-row sm:items-start justify-between gap-2.5">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-tint text-sea grid place-items-center shrink-0 mt-0.5">
+                  <i class="fa-solid fa-wrench text-xs"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <b class="text-xs sm:text-sm font-semibold text-ink">Kalibrasi Ember Jungkit Tipping Bucket</b>
+                    <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-okbg text-ok">Selesai</span>
+                  </div>
+                  <p class="text-xs text-mute mt-1 leading-relaxed">Pembersihan daun kering pada saringan corong penampung hujan dan pengujian 50 tetes simulator air kalibrasi (10mm).</p>
+                  <div class="flex items-center gap-3 text-[11px] text-mute mt-1.5">
+                    <span><i class="fa-solid fa-hard-drive text-sea mr-1"></i>EDGE-01 (Pantai)</span>
+                    <span><i class="fa-solid fa-user-gear mr-1"></i>Budi Santoso (Pengelola Sawarna)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0 text-xs text-mute sm:self-start">
+                <span class="font-semibold text-ink block">22 Okt 2026</span>
+                <span class="text-[11px]">10.15 WIB</span>
+              </div>
+            </div>
+
+            <div class="py-3 flex flex-col sm:flex-row sm:items-start justify-between gap-2.5">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-tint text-sea grid place-items-center shrink-0 mt-0.5">
+                  <i class="fa-solid fa-wrench text-xs"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <b class="text-xs sm:text-sm font-semibold text-ink">Pelumasan Bearing Anemometer & Tiang Sensor</b>
+                    <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-okbg text-ok">Selesai</span>
+                  </div>
+                  <p class="text-xs text-mute mt-1 leading-relaxed">Pemberian pelumas silikon marinir pada as putar anemometer tiga cangkir dan pengencangan klem tiang stainless steel 316.</p>
+                  <div class="flex items-center gap-3 text-[11px] text-mute mt-1.5">
+                    <span><i class="fa-solid fa-hard-drive text-sea mr-1"></i>EDGE-01 (Pantai)</span>
+                    <span><i class="fa-solid fa-user-gear mr-1"></i>Rian Hidayat (Teknisi Abdimas Tel-U)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0 text-xs text-mute sm:self-start">
+                <span class="font-semibold text-ink block">15 Okt 2026</span>
+                <span class="text-[11px]">16.00 WIB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-line/60 flex items-center justify-between text-xs text-mute">
+          <span>Menampilkan log perawatan aktif</span>
+          <a href="#" class="text-sea font-semibold hover:underline">Semua Arsip &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Kontrak Data Telemetri JSON Live (5 Kolom) -->
+      <div class="lg:col-span-5 bg-card rounded-[20px] p-4 sm:p-5 border border-line/60 shadow-soft flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-line/60">
+            <div>
+              <h2 class="text-base sm:text-[17px] font-bold text-ink">Kontrak Data & Telemetri Live</h2>
+              <p class="text-mute text-xs mt-0.5">Payload JSON ingestion LoRa dari EDGE-01 ke Gateway (SRS 6.2 & 6.3).</p>
+            </div>
+            <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-tint text-sea">JSON / MQTT</span>
+          </div>
+
+          <div class="relative bg-dark rounded-xl p-3 text-white/90 font-mono text-[11px] leading-relaxed overflow-x-auto shadow-inner max-h-[290px] border border-dark">
+            <pre><code>{
+  "device_id": "EDGE-01",
+  "ts": "2026-11-04T10:00:00+07:00",
+  "seq": 10452,
+  "telemetry": {
+    "temperature_c": 29.4,
+    "humidity_pct": 84.0,
+    "pressure_hpa": 1008.6,
+    "rainfall_mm": 3.2,
+    "wind_speed_kmh": 34.0,
+    "wind_dir_deg": 225,
+    "uv_index": 6.8
+  },
+  "diagnostics": {
+    "battery_v": 12.4,
+    "battery_pct": 78,
+    "solar_v": 17.9,
+    "rssi_dbm": -104,
+    "snr_db": 6.5,
+    "pending_sync": 38
+  },
+  "flags": ["ok", "wind_warning"]
+}</code></pre>
+          </div>
+
+          <div class="mt-3 bg-bg/80 rounded-xl p-3 border border-line/70 text-xs flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-ok"></i>
+              <span class="text-ink font-semibold">Validasi Payload: Format Standar Ingestion</span>
+            </div>
+            <span class="text-[11px] text-mute">Hash: SHA-256 Valid</span>
+          </div>
+        </div>
+
+        <div class="pt-3 mt-3 border-t border-line/60 flex items-center justify-between text-xs">
+          <span class="text-mute">Format Ingestion: POST /api/ingest</span>
+          <button onclick="alert('Paket simulasi terkirim ke server ingestion!')" class="text-sea font-bold hover:underline inline-flex items-center gap-1">
+            <i class="fa-solid fa-paper-plane text-xs"></i> Uji Simulasi Ingest
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
+
