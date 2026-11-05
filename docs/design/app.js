@@ -15,9 +15,10 @@
   }
 
   var B = 'w-10 h-10 sm:w-11 sm:h-11 rounded-full grid place-items-center transition-all ';
+  var isPerangkat = window.location.pathname.indexOf('perangkat') !== -1;
   var navItems = [
-    { id: 'grid', label: 'Dashboard', active: true },
-    { id: 'cpu', label: 'Perangkat Sensor' },
+    { id: 'grid', label: 'Dashboard', url: 'index.html', active: !isPerangkat },
+    { id: 'cpu', label: 'Perangkat Sensor', url: 'perangkat.html', active: isPerangkat },
     { id: 'chart', label: 'Grafik Tren' },
     { id: 'tower', label: 'Stasiun Pesisir' },
     { id: 'shield', label: 'Tim Pengelola' },
@@ -27,7 +28,9 @@
   var sideEl = document.getElementById('side');
   if (sideEl) {
     sideEl.innerHTML = navItems.map(function(item) {
-      return '<button aria-label="' + item.label + '" title="' + item.label + '" class="' + B + (item.active ? 'bg-dark text-white shadow-md' : 'text-mute hover:bg-tint hover:text-sea') + '">' + ic(item.id) + '</button>';
+      var tag = item.url ? 'a' : 'button';
+      var href = item.url ? ' href="' + item.url + '"' : '';
+      return '<' + tag + href + ' aria-label="' + item.label + '" title="' + item.label + '" class="' + B + (item.active ? 'bg-dark text-white shadow-md' : 'text-mute hover:bg-tint hover:text-sea') + '">' + ic(item.id) + '</' + tag + '>';
     }).join('') +
     '<div class="hidden lg:block flex-1 min-h-[30px]"></div>' +
     '<button aria-label="Pengaturan" class="' + B + 'text-mute hover:bg-tint hover:text-sea">' + ic('set') + '</button>' +

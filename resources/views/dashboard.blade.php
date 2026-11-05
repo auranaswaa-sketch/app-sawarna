@@ -11,14 +11,14 @@
         <!-- ================= SIDEBAR CAPSULE ================= -->
         <aside class="flex lg:flex-col items-center justify-between lg:justify-start gap-2.5 sm:gap-3 bg-card rounded-[32px] sm:rounded-[36px] p-2 sm:p-2.5 shadow-soft border border-line/60 overflow-x-auto lg:overflow-visible sticky top-3 z-30">
             <!-- 1. Grid / Dashboard (Active) -->
-            <button aria-label="Dashboard Beranda" title="Dashboard Beranda" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-dark text-white grid place-items-center shadow-md transition-all hover:scale-105 active:scale-95">
+            <a href="{{ route('dashboard') }}" aria-label="Dashboard Beranda" title="Dashboard Beranda" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-dark text-white grid place-items-center shadow-md transition-all hover:scale-105 active:scale-95">
                 <i class="fa-solid fa-table-cells-large text-base sm:text-lg"></i>
-            </button>
+            </a>
 
             <!-- 2. Wallet / Hardware Nodes -->
-            <button aria-label="Perangkat IoT" title="Perangkat & Sensor Lapangan" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
+            <a href="{{ route('devices.index') }}" aria-label="Perangkat IoT" title="Perangkat & Sensor Lapangan" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
                 <i class="fa-solid fa-microchip text-base sm:text-lg"></i>
-            </button>
+            </a>
 
             <!-- 3. Analytics / Charts -->
             <button aria-label="Analisis Tren" title="Grafik Tren & Riwayat Cuaca" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
