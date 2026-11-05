@@ -4,8 +4,8 @@ test('the dashboard application returns a successful response', function () {
     $response = $this->get('/');
 
     $response->assertStatus(200);
-    $response->assertSee('Pos Pantau Cuaca Pantai Sawarna');
-    $response->assertSee('STATUS KAWASAN: WASPADA ANGIN KENCANG');
+    $response->assertSee('Cuaca Mikro Pantai Sawarna');
+    $response->assertSee('Waspada');
 });
 
 test('the devices page returns a successful response', function () {

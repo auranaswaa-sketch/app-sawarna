@@ -1,299 +1,485 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda Cuaca - Pos Pantau Pantai Sawarna')
+@section('title', 'Cuaca Mikro Pantai Sawarna')
 
 @section('content')
 <div class="bg-bg text-ink min-h-[calc(100vh-2.5rem)] flex flex-col justify-between" id="dashboard-root">
 
+    <!-- Top Wrapper: Grid Layout (Sidebar Capsule + Main Canvas) -->
     <div class="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
 
         @include('partials.sidebar')
 
-        <!-- ================= KONTEN UTAMA OPERATOR ================= -->
-        <main class="flex flex-col gap-4 min-w-0">
+        <!-- ================= MAIN DASHBOARD CONTENT ================= -->
+        <main class="flex flex-col gap-4 sm:gap-5 min-w-0">
 
-            <!-- ---------- HEADER BAR SEDERHANA ---------- -->
-            <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card rounded-[20px] p-4 border border-line shadow-soft">
-                <div>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <h1 class="text-xl sm:text-2xl font-extrabold text-ink">Pos Pantau Cuaca Pantai Sawarna</h1>
-                        <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-0.5 rounded-full bg-okbg text-ok">
-                            <i class="fa-solid fa-circle text-[6px]"></i> Sensor Terhubung
-                        </span>
+            <!-- ---------- HEADER BAR ---------- -->
+            <header class="flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+                <!-- Left: Floral Sunburst Logo + Title -->
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <!-- Sunburst 8-Petal Floral Logo -->
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-tint text-sea grid place-items-center shrink-0 shadow-soft">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <line x1="12" y1="2" x2="12" y2="6"></line>
+                            <line x1="12" y1="18" x2="12" y2="22"></line>
+                            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                            <line x1="2" y1="12" x2="6" y2="12"></line>
+                            <line x1="18" y1="12" x2="22" y2="12"></line>
+                            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+                        </svg>
                     </div>
-                    <p class="text-mute text-xs sm:text-sm mt-0.5">Pantau keselamatan wisatawan, nelayan pesisir, dan kondisi ombak secara langsung</p>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-ink">{{ $meta['title'] }}</h1>
+                            <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-okbg text-ok">
+                                <i class="fa-solid fa-circle text-[6px]"></i> Live Telemetri
+                            </span>
+                        </div>
+                        <p class="text-mute text-xs sm:text-[13.5px] mt-0.5">{{ $meta['last_updated'] }}</p>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-2 shrink-0">
-                    <span class="text-xs text-mute font-medium bg-bg px-3 py-1.5 rounded-xl border border-line">
-                        <i class="fa-regular fa-clock mr-1 text-sea"></i>
-                        Diperbarui: <strong>10.00 WIB</strong>
-                    </span>
-                    <button type="button" onclick="location.reload()" title="Muat Ulang Data" class="p-2 w-9 h-9 rounded-xl bg-card border border-line text-mute hover:text-ink hover:bg-tint transition-all grid place-items-center">
-                        <i class="fa-solid fa-rotate-right text-xs"></i>
+                <!-- Right: Warning Banner & Action Buttons -->
+                <div class="flex items-center gap-2.5 sm:gap-3.5 flex-wrap md:flex-nowrap">
+                    <!-- Warning Banner from Blueprint -->
+                    <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-warnbg/90 border border-warn/30 shadow-soft">
+                        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-warn text-white">
+                            {{ $meta['warning']['badge'] }}
+                        </span>
+                        <span class="text-xs font-medium text-ink">
+                            {{ $meta['warning']['text'] }}
+                        </span>
+                    </div>
+
+                    <!-- Search Pill -->
+                    <div class="hidden xl:flex items-center bg-card rounded-full pl-4 pr-1 py-1 shadow-soft border border-line/70 w-[200px]">
+                        <input type="text" placeholder="Cari data sensor..." class="bg-transparent text-xs text-ink placeholder-mute focus:outline-none w-full">
+                        <button class="w-8 h-8 rounded-full bg-dark text-white grid place-items-center shrink-0">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Message Icon -->
+                    <button aria-label="Pesan & Komunikasi" class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-card hover:bg-tint text-ink border border-line/70 grid place-items-center shadow-soft shrink-0 transition-colors">
+                        <i class="fa-regular fa-comment-dots text-sm sm:text-base"></i>
+                        <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-card"></span>
+                    </button>
+
+                    <!-- Notification Bell Icon -->
+                    <button aria-label="Notifikasi Peringatan" class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-card hover:bg-tint text-ink border border-line/70 grid place-items-center shadow-soft shrink-0 transition-colors">
+                        <i class="fa-regular fa-bell text-sm sm:text-base"></i>
+                        <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-warn ring-2 ring-card animate-pulse"></span>
                     </button>
                 </div>
             </header>
 
-            <!-- ---------- BLOK 1: BANNER STATUS KESELAMATAN PANTAI UTAMA ---------- -->
-            @if($meta['warning']['active'])
-            <section class="bg-warnbg border-2 border-warn/40 rounded-[20px] p-4 sm:p-5 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-start gap-3.5">
-                    <div class="w-12 h-12 rounded-2xl bg-warn text-white grid place-items-center text-xl shrink-0 shadow-sm mt-0.5">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
+            <!-- ---------- ROW 1: 5 METRIC CARDS (SUHU, KELEMBAPAN, TEKANAN, HUJAN, ANGIN) ---------- -->
+            <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+
+                <!-- Card 1: Suhu (29,4 °C) -->
+                <div class="squircle-card p-3.5 sm:p-4 flex flex-col justify-between border border-line/60">
+                    <div class="flex items-center justify-between">
+                        <span class="text-mute text-xs font-semibold">{{ $metrics['suhu']['label'] }}</span>
+                        <div class="flex items-end gap-1 h-5">
+                            <span class="w-1 bg-sea rounded-full" style="height: 40%"></span>
+                            <span class="w-1 bg-sea rounded-full" style="height: 70%"></span>
+                            <span class="w-1 bg-sea rounded-full" style="height: 55%"></span>
+                            <span class="w-1 bg-sea rounded-full" style="height: 90%"></span>
+                            <span class="w-1 bg-sea rounded-full" style="height: 60%"></span>
+                        </div>
                     </div>
+                    <div class="flex items-baseline gap-1 my-1">
+                        <span class="text-2xl sm:text-[26px] font-bold tracking-tight text-ink">{{ $metrics['suhu']['value'] }}</span>
+                        <span class="text-xs text-mute font-medium">{{ $metrics['suhu']['unit'] }}</span>
+                    </div>
+                    <!-- Blue Sparkline Wave -->
+                    <div class="w-full h-7 mt-0.5">
+                        <svg viewBox="0 0 100 30" class="w-full h-full overflow-visible">
+                            <path d="M 0 25 Q 15 22, 30 24 T 50 14 T 70 8 T 85 16 T 100 12" fill="none" stroke="var(--sea)" stroke-width="2.5" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card 2: Kelembapan (84 %) -->
+                <div class="squircle-card p-3.5 sm:p-4 flex flex-col justify-between border border-line/60">
+                    <div class="flex items-center justify-between">
+                        <span class="text-mute text-xs font-semibold">{{ $metrics['kelembapan']['label'] }}</span>
+                        <div class="w-6 h-6 rounded-full bg-tint text-sea grid place-items-center text-xs">
+                            <i class="fa-solid fa-droplet text-[10px]"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1 my-1">
+                        <span class="text-2xl sm:text-[26px] font-bold tracking-tight text-ink">{{ $metrics['kelembapan']['value'] }}</span>
+                        <span class="text-xs text-mute font-medium">{{ $metrics['kelembapan']['unit'] }}</span>
+                    </div>
+                    <!-- Blue Sparkline Wave -->
+                    <div class="w-full h-7 mt-0.5">
+                        <svg viewBox="0 0 100 30" class="w-full h-full overflow-visible">
+                            <path d="M 0 10 Q 15 6, 30 8 T 50 18 T 70 24 T 85 16 T 100 14" fill="none" stroke="var(--sea)" stroke-width="2.5" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card 3: Tekanan (1008,6 hPa) -->
+                <div class="squircle-card p-3.5 sm:p-4 flex flex-col justify-between border border-line/60">
+                    <div class="flex items-center justify-between">
+                        <span class="text-mute text-xs font-semibold">{{ $metrics['tekanan']['label'] }}</span>
+                        <div class="w-6 h-6 rounded-full bg-tint text-sea grid place-items-center text-xs">
+                            <i class="fa-solid fa-gauge-high text-[10px]"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1 my-1">
+                        <span class="text-2xl sm:text-[26px] font-bold tracking-tight text-ink">{{ $metrics['tekanan']['value'] }}</span>
+                        <span class="text-xs text-mute font-medium">{{ $metrics['tekanan']['unit'] }}</span>
+                    </div>
+                    <!-- Blue Sparkline Wave -->
+                    <div class="w-full h-7 mt-0.5">
+                        <svg viewBox="0 0 100 30" class="w-full h-full overflow-visible">
+                            <path d="M 0 20 Q 20 8, 40 10 T 70 22 T 85 18 T 100 16" fill="none" stroke="var(--sea)" stroke-width="2.5" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card 4: Hujan (3,2 mm/jam) -->
+                <div class="squircle-card p-3.5 sm:p-4 flex flex-col justify-between border border-line/60">
+                    <div class="flex items-center justify-between">
+                        <span class="text-mute text-xs font-semibold">{{ $metrics['hujan']['label'] }}</span>
+                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-okbg text-ok">Aman</span>
+                    </div>
+                    <div class="flex items-baseline gap-1 my-1">
+                        <span class="text-2xl sm:text-[26px] font-bold tracking-tight text-ink">{{ $metrics['hujan']['value'] }}</span>
+                        <span class="text-xs text-mute font-medium">{{ $metrics['hujan']['unit'] }}</span>
+                    </div>
+                    <!-- Blue Sparkline Wave -->
+                    <div class="w-full h-7 mt-0.5">
+                        <svg viewBox="0 0 100 30" class="w-full h-full overflow-visible">
+                            <path d="M 0 26 Q 15 15, 30 10 T 50 18 T 65 24 T 85 25 T 100 25" fill="none" stroke="var(--sea)" stroke-width="2.5" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card 5 (Hero Card): Angin (34 km/jam) Waspada -->
+                <div class="col-span-2 sm:col-span-1 squircle-card p-3.5 sm:p-4 flex flex-col justify-between bg-gradient-to-br from-sea to-deep text-white border-0 shadow-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-white/80 text-xs font-semibold">{{ $metrics['angin']['label'] }}</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-warn text-white shadow-sm">Waspada</span>
+                    </div>
+                    <div class="flex items-baseline gap-1 my-1">
+                        <span class="text-2xl sm:text-[26px] font-bold tracking-tight text-white">{{ $metrics['angin']['value'] }}</span>
+                        <span class="text-xs text-white/80 font-medium">{{ $metrics['angin']['unit'] }}</span>
+                    </div>
+                    <!-- Crisp White Wave Line -->
+                    <div class="w-full h-7 mt-0.5">
+                        <svg viewBox="0 0 100 30" class="w-full h-full overflow-visible">
+                            <path d="M 0 15 Q 15 8, 30 10 T 50 20 T 70 24 T 85 10 T 100 8" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ---------- ROW 2: TREN INTERAKTIF, ARAH ANGIN, HARDWARE & PERINGATAN ---------- -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 items-stretch">
+
+                <!-- 1. TREN PARAMETER CUACA (Lg: Col-Span 6) -->
+                <div class="lg:col-span-6 squircle-card p-4 sm:p-5 flex flex-col justify-between border border-line/60">
+                    <!-- Header with Pills Filter matching wireframe -->
                     <div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="text-xs font-black tracking-wider uppercase px-2 py-0.5 rounded-md bg-warn text-white">PERINGATAN OPERATOR</span>
-                            <h2 class="text-lg sm:text-xl font-extrabold text-ink">STATUS KAWASAN: WASPADA ANGIN KENCANG</h2>
-                        </div>
-                        <p class="text-ink/80 text-xs sm:text-sm mt-1 font-medium">
-                            Kecepatan angin saat ini <strong>{{ $metrics['angin']['value'] }} km/jam</strong> (Ambang batas aman: <strong>30 km/jam</strong>).
-                            <span class="block text-warn font-bold mt-0.5">&rarr; Instruksi: Imbau pengunjung menjauhi tebing karang Tanjung Layar dan pasang bendera kuning di bibir pantai.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2.5 shrink-0 flex-wrap">
-                    <button type="button" onclick="alert('Pesan peringatan telah dikirimkan ke grup WhatsApp Pokdarwis & Relawan Pantai.')" class="px-4 py-2.5 rounded-xl bg-ok text-white text-xs sm:text-sm font-bold shadow-soft hover:opacity-90 active:scale-95 transition-all flex items-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-base"></i>
-                        <span>Kirim Peringatan WA</span>
-                    </button>
-                    <button type="button" onclick="alert('Status alert diakui oleh operator.')" class="px-3.5 py-2.5 rounded-xl bg-card border border-line text-ink text-xs sm:text-sm font-bold hover:bg-tint transition-all">
-                        Konfirmasi Paham
-                    </button>
-                </div>
-            </section>
-            @else
-            <section class="bg-okbg border-2 border-ok/40 rounded-[20px] p-4 sm:p-5 shadow-soft flex items-center justify-between gap-4">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-2xl bg-ok text-white grid place-items-center text-xl shrink-0">
-                        <i class="fa-solid fa-shield-heart"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-base sm:text-lg font-extrabold text-ink">STATUS KAWASAN: PANTAI AMAN & KONDUSIF</h2>
-                        <p class="text-mute text-xs sm:text-sm mt-0.5">Semua parameter cuaca berada dalam batas normal. Aktivitas wisata dan nelayan dapat berjalan seperti biasa.</p>
-                    </div>
-                </div>
-                <span class="text-xs font-bold px-3 py-1 rounded-full bg-white text-ok shadow-xs shrink-0">Bendera Hijau</span>
-            </section>
-            @endif
-
-            <!-- ---------- BLOK 2: 4 KARTU METRIK UTAMA CUACA RAMAH OPERATOR ---------- -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                
-                <!-- 1. ANGIN (Hero Focus) -->
-                <div class="bg-card rounded-[20px] p-4 sm:p-5 border-2 border-warn/30 shadow-soft flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-9 h-9 rounded-xl bg-warnbg text-warn grid place-items-center font-bold">
-                                <i class="fa-solid fa-wind text-base"></i>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-base sm:text-[17px] font-bold text-ink">Tren</h2>
+                                <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2 py-0.5 rounded-full bg-warnbg text-warn">
+                                    <i class="fa-solid fa-circle text-[6px]"></i> Ambang Batas 30
+                                </span>
                             </div>
-                            <span class="text-xs font-extrabold tracking-wider uppercase text-mute">Kecepatan Angin</span>
-                        </div>
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-warnbg text-warn">Waspada</span>
-                    </div>
 
-                    <div class="my-2">
-                        <div class="text-3xl sm:text-4xl font-black tracking-tight text-ink">
-                            {{ $metrics['angin']['value'] }} <span class="text-sm font-semibold text-mute">km/jam</span>
-                        </div>
-                        <p class="text-xs font-semibold text-warn mt-1">
-                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>Melewati batas aman 30 km/jam
-                        </p>
-                    </div>
-
-                    <div class="pt-3 border-t border-line/60 flex items-center justify-between text-xs text-mute">
-                        <span>Arah: <strong>{{ $wind['cardinal'] }} ({{ $wind['degrees'] }}°)</strong></span>
-                        <span>Embusan: <strong>{{ $wind['gust'] }} km/j</strong></span>
-                    </div>
-                </div>
-
-                <!-- 2. HUJAN -->
-                <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line shadow-soft flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center font-bold">
-                                <i class="fa-solid fa-droplet text-base"></i>
+                            <!-- Rentang Waktu (24 jam / 7 hari) -->
+                            <div class="flex items-center gap-1 bg-bg/80 p-0.5 rounded-full border border-line/70">
+                                <button onclick="setRange('24h')" id="btn-range-24" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-card text-ink shadow-sm transition-all">24 jam</button>
+                                <button onclick="setRange('7d')" id="btn-range-7" class="px-2.5 py-0.5 rounded-full text-xs font-semibold text-mute hover:text-ink transition-all">7 hari</button>
                             </div>
-                            <span class="text-xs font-extrabold tracking-wider uppercase text-mute">Curah Hujan</span>
                         </div>
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Aman</span>
-                    </div>
 
-                    <div class="my-2">
-                        <div class="text-3xl sm:text-4xl font-black tracking-tight text-ink">
-                            {{ $metrics['hujan']['value'] }} <span class="text-sm font-semibold text-mute">mm/jam</span>
+                        <!-- Parameter Filter Buttons from blueprint: [Suhu] [Kelembapan] [Tekanan] [Hujan] [Angin] -->
+                        <div class="flex flex-wrap items-center gap-1.5 mb-3">
+                            <button onclick="setParam('suhu')" id="param-suhu" class="param-btn px-3 py-1 rounded-full text-xs font-semibold bg-dark text-white shadow-sm transition-all">Suhu</button>
+                            <button onclick="setParam('kelembapan')" id="param-kelembapan" class="param-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line transition-all">Kelembapan</button>
+                            <button onclick="setParam('tekanan')" id="param-tekanan" class="param-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line transition-all">Tekanan</button>
+                            <button onclick="setParam('hujan')" id="param-hujan" class="param-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line transition-all">Hujan</button>
+                            <button onclick="setParam('angin')" id="param-angin" class="param-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line transition-all">Angin</button>
                         </div>
-                        <p class="text-xs font-semibold text-ok mt-1">
-                            <i class="fa-solid fa-circle-check mr-1"></i>Gerimis ringan (Batas: 10 mm/j)
-                        </p>
-                    </div>
 
-                    <div class="pt-3 border-t border-line/60 flex items-center justify-between text-xs text-mute">
-                        <span>Kondisi Tanah: <strong>Kering Stabil</strong></span>
-                        <span>Potensi Banjir: <strong>Nol</strong></span>
-                    </div>
-                </div>
-
-                <!-- 3. SUHU UDARA -->
-                <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line shadow-soft flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center font-bold">
-                                <i class="fa-solid fa-temperature-half text-base"></i>
+                        <!-- Summary Pills: Maks, Rata-rata, Min -->
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <div class="bg-bg/70 rounded-xl px-3 py-1 border border-line/70 flex items-center gap-2">
+                                <span class="text-mute text-[11px] font-medium">Maks</span>
+                                <b id="trend-max-val" class="text-xs sm:text-sm font-bold text-ink">30,8 °C</b>
+                                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-okbg text-ok">+2.45%</span>
                             </div>
-                            <span class="text-xs font-extrabold tracking-wider uppercase text-mute">Suhu Udara</span>
-                        </div>
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Normal</span>
-                    </div>
-
-                    <div class="my-2">
-                        <div class="text-3xl sm:text-4xl font-black tracking-tight text-ink">
-                            {{ $metrics['suhu']['value'] }} <span class="text-sm font-semibold text-mute">°C</span>
-                        </div>
-                        <p class="text-xs font-semibold text-mute mt-1">
-                            Kelembapan udara: <strong>{{ $metrics['kelembapan']['value'] }}%</strong>
-                        </p>
-                    </div>
-
-                    <div class="pt-3 border-t border-line/60 flex items-center justify-between text-xs text-mute">
-                        <span>Udara: <strong>Hangat Pesisir</strong></span>
-                        <span>Maks Hari Ini: <strong>30,8 °C</strong></span>
-                    </div>
-                </div>
-
-                <!-- 4. KONDISI LAUT & TEKANAN -->
-                <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line shadow-soft flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-9 h-9 rounded-xl bg-tint text-sea grid place-items-center font-bold">
-                                <i class="fa-solid fa-gauge-high text-base"></i>
+                            <div class="bg-bg/70 rounded-xl px-3 py-1 border border-line/70 flex items-center gap-2">
+                                <span class="text-mute text-[11px] font-medium">Rata-rata</span>
+                                <b id="trend-avg-val" class="text-xs sm:text-sm font-bold text-ink">28,1 °C</b>
+                                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-badbg text-bad">-1.15%</span>
                             </div>
-                            <span class="text-xs font-extrabold tracking-wider uppercase text-mute">Tekanan Udara</span>
+                            <div class="bg-bg/70 rounded-xl px-3 py-1 border border-line/70 flex items-center gap-2">
+                                <span class="text-mute text-[11px] font-medium">Min</span>
+                                <b id="trend-min-val" class="text-xs sm:text-sm font-bold text-ink">23,9 °C</b>
+                            </div>
                         </div>
-                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">Stabil</span>
                     </div>
 
-                    <div class="my-2">
-                        <div class="text-3xl sm:text-4xl font-black tracking-tight text-ink">
-                            {{ $metrics['tekanan']['value'] }} <span class="text-sm font-semibold text-mute">hPa</span>
-                        </div>
-                        <p class="text-xs font-semibold text-ok mt-1">
-                            <i class="fa-solid fa-water mr-1"></i>Ombak teratur, tidak ada badai
-                        </p>
-                    </div>
+                    <!-- SVG Chart with Y-axis and X-axis ticks matching blueprint -->
+                    <div class="relative w-full h-[200px] sm:h-[220px] mt-2">
+                        <svg id="trend-svg" class="w-full h-full overflow-visible" viewBox="0 0 540 210" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chartFillGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="var(--sea)" stop-opacity="0.35"></stop>
+                                    <stop offset="100%" stop-color="var(--sea)" stop-opacity="0.0"></stop>
+                                </linearGradient>
+                            </defs>
 
-                    <div class="pt-3 border-t border-line/60 flex items-center justify-between text-xs text-mute">
-                        <span>Depresi Badai: <strong>Aman (&gt; 1000)</strong></span>
-                        <span>Status Gelombang: <strong>Sedang</strong></span>
+                            <!-- Y-axis Ticks & Horizontal Lines (32,2 / 30,2 / 28,1 / 26,0 / 23,9) -->
+                            <g class="text-[10px] font-medium fill-mute">
+                                <line x1="36" y1="20" x2="530" y2="20" stroke="var(--line)"></line>
+                                <text x="30" y="24" text-anchor="end">32,2</text>
+
+                                <line x1="36" y1="60" x2="530" y2="60" stroke="var(--line)"></line>
+                                <text x="30" y="64" text-anchor="end">30,2</text>
+
+                                <line x1="36" y1="100" x2="530" y2="100" stroke="var(--line)"></line>
+                                <text x="30" y="104" text-anchor="end">28,1</text>
+
+                                <line x1="36" y1="140" x2="530" y2="140" stroke="var(--line)"></line>
+                                <text x="30" y="144" text-anchor="end">26,0</text>
+
+                                <line x1="36" y1="180" x2="530" y2="180" stroke="var(--line)"></line>
+                                <text x="30" y="184" text-anchor="end">23,9</text>
+                            </g>
+
+                            <!-- Area Path Fill -->
+                            <path id="svg-area" d="M 36 170 L 60 185 L 90 180 L 115 150 L 140 165 L 180 120 L 210 115 L 260 40 L 300 30 L 330 65 L 360 110 L 390 95 L 430 155 L 470 155 L 490 100 L 530 110 L 530 180 L 36 180 Z" fill="url(#chartFillGradient)"></path>
+
+                            <!-- Stroke Line (Smooth Spline Curve) -->
+                            <path id="svg-stroke" d="M 36 170 L 60 185 L 90 180 L 115 150 L 140 165 L 180 120 L 210 115 L 260 40 L 300 30 L 330 65 L 360 110 L 390 95 L 430 155 L 470 155 L 490 100 L 530 110" fill="none" stroke="var(--sea)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+
+                            <!-- X-axis Ticks (-23 j / -19 j / -15 j / -11 j / -7 j / -3 j) -->
+                            <g class="text-[10px] font-medium fill-mute">
+                                <text x="50" y="202" text-anchor="middle">-23 j</text>
+                                <text x="140" y="202" text-anchor="middle">-19 j</text>
+                                <text x="230" y="202" text-anchor="middle">-15 j</text>
+                                <text x="320" y="202" text-anchor="middle">-11 j</text>
+                                <text x="410" y="202" text-anchor="middle">-7 j</text>
+                                <text x="500" y="202" text-anchor="middle">-3 j</text>
+                            </g>
+                        </svg>
                     </div>
                 </div>
 
-            </section>
+                <!-- 2. MIDDLE COLUMN: ARAH ANGIN & PERANGKAT (Lg: Col-Span 3) -->
+                <div class="lg:col-span-3 flex flex-col gap-3.5">
+                    
+                    <!-- Arah Angin Card -->
+                    <div class="squircle-card p-4 flex flex-col justify-between border border-line/60">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-sm sm:text-base font-bold text-ink">{{ $wind['title'] }}</h2>
+                            <span class="text-[11px] font-bold text-sea uppercase">Barat Daya</span>
+                        </div>
 
-            <!-- ---------- BLOK 3: KONDISI ALAT SENSOR & GATEWAY (BEBAS JARGON) ---------- -->
-            <section class="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
-                
-                <!-- KARTU ALAT 1: SENSOR PANTAI -->
-                <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line shadow-soft">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-okbg text-ok grid place-items-center text-lg">
-                                <i class="fa-solid fa-solar-panel"></i>
+                        <!-- Compass Dial Center from blueprint & image style -->
+                        <div class="my-2 flex items-center justify-center gap-4">
+                            <!-- Circular Dark Dial with Needle -->
+                            <div class="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full bg-[#1b2d24] border-2 border-line/60 shadow-inner grid place-items-center shrink-0">
+                                <span class="absolute top-1 text-[9px] font-bold text-white/60">U</span>
+                                <span class="absolute right-1.5 text-[9px] font-bold text-white/60">T</span>
+                                <span class="absolute bottom-1 text-[9px] font-bold text-white/60">S</span>
+                                <span class="absolute left-1.5 text-[9px] font-bold text-white/60">B</span>
+                                <!-- Needle pointing 225° -->
+                                <div class="w-full h-full grid place-items-center transition-transform duration-700" style="transform: rotate(225deg)">
+                                    <svg class="w-4 h-12 text-[#88b19d]" viewBox="0 0 24 56" fill="currentColor">
+                                        <polygon points="12,0 18,38 12,32 6,38"></polygon>
+                                        <polygon points="12,56 15,38 12,34 9,38" fill="#ffffff" opacity="0.4"></polygon>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Bold Heading & Cardinal from Blueprint -->
+                            <div>
+                                <span class="text-mute text-xs block font-medium">Arah angin</span>
+                                <b class="text-2xl sm:text-3xl font-bold text-ink tracking-tight">{{ $wind['degrees'] }}°</b>
+                                <span class="text-mute text-xs block font-medium lowercase">{{ $wind['cardinal'] }}</span>
+                            </div>
+                        </div>
+
+                        <!-- 3 Column Wind Stats -->
+                        <div class="grid grid-cols-3 gap-1 pt-2 border-t border-line/60 text-center">
+                            <div>
+                                <span class="text-mute text-[10px] block font-medium">Derajat</span>
+                                <b class="text-sm font-bold text-ink">225°</b>
                             </div>
                             <div>
-                                <h3 class="font-extrabold text-sm text-ink">Sensor Cuaca di Bibir Pantai</h3>
-                                <span class="text-xs text-mute">Tiang Sensor Utama · Pantai Ciantir</span>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-okbg text-ok">
-                            <i class="fa-solid fa-circle text-[6px]"></i> Menyala Normal
-                        </span>
-                    </div>
-
-                    <div class="space-y-2.5 text-xs">
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-bg border border-line/60">
-                            <span class="text-mute font-medium">Baterai Alat:</span>
-                            <span class="font-bold text-ink flex items-center gap-1.5">
-                                <i class="fa-solid fa-battery-three-quarters text-ok text-sm"></i>
-                                78% (Panel Surya Mengisi Baik)
-                            </span>
-                        </div>
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-bg border border-line/60">
-                            <span class="text-mute font-medium">Kekuatan Sinyal ke Kantor:</span>
-                            <span class="font-bold text-ok flex items-center gap-1">
-                                <i class="fa-solid fa-signal"></i> Sangat Kuat (Jarak 1,4 km)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KARTU ALAT 2: GATEWAY KANTOR -->
-                <div class="bg-card rounded-[20px] p-4 sm:p-5 border border-line shadow-soft">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-tint text-sea grid place-items-center text-lg">
-                                <i class="fa-solid fa-building-user"></i>
+                                <span class="text-mute text-[10px] block font-medium">Hembusan</span>
+                                <b class="text-sm font-bold text-ink">41 <small class="text-[9px] text-mute font-normal">km/j</small></b>
                             </div>
                             <div>
-                                <h3 class="font-extrabold text-sm text-ink">Komputer Posko Kantor Desa</h3>
-                                <span class="text-xs text-mute">Penerima Data Radio LoRa & Internet 4G</span>
+                                <span class="text-mute text-[10px] block font-medium">Rata-rata</span>
+                                <b class="text-sm font-bold text-ink">28 <small class="text-[9px] text-mute font-normal">km/j</small></b>
                             </div>
                         </div>
-                        <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-okbg text-ok">
-                            <i class="fa-solid fa-circle text-[6px]"></i> Terhubung
-                        </span>
                     </div>
 
-                    <div class="space-y-2.5 text-xs">
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-bg border border-line/60">
-                            <span class="text-mute font-medium">Koneksi Internet Lapangan:</span>
-                            <span class="font-bold text-ok flex items-center gap-1.5">
-                                <i class="fa-solid fa-wifi text-sm"></i> 4G Telkomsel Aktif & Cepat
+                    <!-- Perangkat Card (Hardware Status) -->
+                    <div class="squircle-card p-4 flex flex-col justify-between border border-line/60 flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm sm:text-base font-bold text-ink">Perangkat</h2>
+                            <span class="text-[11px] font-semibold text-ok flex items-center gap-1">
+                                <i class="fa-solid fa-circle text-[6px]"></i> 3 Aktif
                             </span>
                         </div>
-                        <div class="flex items-center justify-between p-2.5 rounded-xl bg-bg border border-line/60">
-                            <span class="text-mute font-medium">Penyimpanan & Sinkronisasi:</span>
-                            <span class="font-bold text-ink">Semua Data Aman Tersimpan</span>
+
+                        <div class="flex flex-col gap-2.5">
+                            <!-- 1. Edge Node Pantai -->
+                            <div class="pb-2 border-b border-line/60">
+                                <div class="flex items-center justify-between">
+                                    <b class="text-xs sm:text-sm font-semibold text-ink">Edge node pantai</b>
+                                    <span class="text-[10px] font-bold text-ok px-1.5 py-0.2 rounded bg-okbg">Online</span>
+                                </div>
+                                <span class="text-mute text-xs mt-0.5 block">Baterai 78% · LoRa −104 dBm</span>
+                                <div class="w-full bg-line/80 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                                    <div class="bg-sea h-full rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+
+                            <!-- 2. Sink Node Kantor -->
+                            <div class="pb-2 border-b border-line/60">
+                                <div class="flex items-center justify-between">
+                                    <b class="text-xs sm:text-sm font-semibold text-ink">Sink node kantor</b>
+                                    <span class="text-[10px] font-bold text-ok px-1.5 py-0.2 rounded bg-okbg">99,4%</span>
+                                </div>
+                                <span class="text-mute text-xs mt-0.5 block">Paket diterima 99,4% · 4G stabil</span>
+                            </div>
+
+                            <!-- 3. Sinkron ke Cloud -->
+                            <div>
+                                <div class="flex items-center justify-between">
+                                    <b class="text-xs sm:text-sm font-semibold text-ink">Sinkron ke cloud</b>
+                                    <span class="text-[10px] font-bold text-warn px-1.5 py-0.2 rounded bg-warnbg">38 antre</span>
+                                </div>
+                                <span class="text-mute text-xs mt-0.5 block">38 data antre · terakhir 12 menit lalu</span>
+                            </div>
                         </div>
+                    </div>
+
+                </div>
+
+                <!-- 3. RIGHT COLUMN: PERINGATAN DINI (Lg: Col-Span 3) -->
+                <div class="lg:col-span-3 squircle-card p-4 sm:p-5 flex flex-col justify-between border border-line/60">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-base sm:text-[17px] font-bold text-ink">Peringatan</h2>
+                            <span class="text-[11px] font-semibold text-mute">Riwayat Terakhir</span>
+                        </div>
+
+                        <!-- 4 Alert Rows from Blueprint -->
+                        <div class="flex flex-col gap-3">
+                            @foreach($alerts as $alert)
+                            <div class="pb-2.5 border-b border-line/60 last:border-0 last:pb-0 flex items-start gap-2.5">
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 {{ $alert['type'] === 'warn' ? 'bg-warnbg text-warn border border-warn/30' : 'bg-okbg text-ok' }}">
+                                    {{ $alert['status'] }}
+                                </span>
+                                <div class="min-w-0 flex-1">
+                                    <b class="text-xs sm:text-[13px] font-semibold text-ink block leading-snug">{{ $alert['title'] }}</b>
+                                    <span class="text-mute text-[11px] block mt-0.5">{{ $alert['desc'] }}</span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Cloud Security & Sync Button -->
+                    <div class="mt-4 pt-3 border-t border-line/60">
+                        <button class="w-full py-2.5 px-4 rounded-xl bg-sea hover:opacity-90 text-white text-xs font-semibold shadow-sm flex items-center justify-center gap-1.5 transition-all">
+                            <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                            Sinkronkan Data Sekarang
+                        </button>
                     </div>
                 </div>
 
-            </section>
-
-            <!-- ---------- BLOK 4: CATATAN PERINGATAN TERAKHIR ---------- -->
-            <section class="bg-card rounded-[20px] p-4 sm:p-5 border border-line shadow-soft">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-extrabold text-sm text-ink flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left text-sea"></i>
-                        <span>Catatan Riwayat Cuaca Terkini</span>
-                    </h3>
-                    <span class="text-xs text-mute font-medium">Catatan Otomatis Posko</span>
-                </div>
-
-                <div class="space-y-2">
-                    @foreach($alerts as $alert)
-                    <div class="flex items-center justify-between p-3 rounded-xl bg-bg border border-line/60 gap-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-8 h-8 rounded-lg {{ $alert['type'] === 'warn' ? 'bg-warnbg text-warn' : 'bg-okbg text-ok' }} grid place-items-center text-xs shrink-0 font-bold">
-                                <i class="fa-solid {{ $alert['type'] === 'warn' ? 'fa-triangle-exclamation' : 'fa-check' }}"></i>
-                            </div>
-                            <div class="min-w-0">
-                                <b class="text-xs sm:text-sm text-ink block truncate">{{ $alert['title'] }}</b>
-                                <span class="text-[11px] text-mute">{{ $alert['desc'] }}</span>
-                            </div>
-                        </div>
-                        <span class="text-[11px] font-bold px-2.5 py-1 rounded-full {{ $alert['type'] === 'warn' ? 'bg-warnbg text-warn' : 'bg-okbg text-ok' }} shrink-0">
-                            {{ $alert['status'] }}
-                        </span>
-                    </div>
-                    @endforeach
-                </div>
             </section>
 
         </main>
     </div>
 
+    <!-- Footer Note -->
+    <footer class="mt-6 pt-3 border-t border-line/60 text-center text-xs text-mute flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>© {{ date('Y') }} Sistem Pemantauan Cuaca Mikro & Peringatan Dini Pantai Sawarna, Lebak, Banten.</span>
+        <span>Gateway Stasiun: <strong class="text-ok">Online</strong> · Transmisi LoRa Aktif</span>
+    </footer>
+
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Data kurva dan statistik untuk parameter
+    const paramData = {
+        suhu: {
+            max: "30,8 °C", avg: "28,1 °C", min: "23,9 °C",
+            d: "M 36 170 L 60 185 L 90 180 L 115 150 L 140 165 L 180 120 L 210 115 L 260 40 L 300 30 L 330 65 L 360 110 L 390 95 L 430 155 L 470 155 L 490 100 L 530 110"
+        },
+        kelembapan: {
+            max: "92 %", avg: "84 %", min: "76 %",
+            d: "M 36 60 L 80 50 L 140 80 L 200 110 L 260 140 L 320 90 L 380 70 L 440 60 L 530 80"
+        },
+        tekanan: {
+            max: "1009,4 hPa", avg: "1008,6 hPa", min: "1007,8 hPa",
+            d: "M 36 120 L 100 110 L 180 90 L 260 100 L 340 130 L 420 110 L 530 95"
+        },
+        hujan: {
+            max: "18,0 mm/j", avg: "3,2 mm/j", min: "0,0 mm/j",
+            d: "M 36 175 L 100 170 L 180 130 L 260 90 L 340 160 L 420 175 L 530 175"
+        },
+        angin: {
+            max: "34,0 km/j", avg: "24,2 km/j", min: "14,0 km/j",
+            d: "M 36 140 L 90 120 L 160 150 L 230 110 L 300 60 L 370 70 L 440 90 L 530 50"
+        }
+    };
+
+    let activeParam = 'suhu';
+
+    function setParam(param) {
+        activeParam = param;
+        document.querySelectorAll('.param-btn').forEach(btn => {
+            btn.className = 'param-btn px-3 py-1 rounded-full text-xs font-semibold bg-bg/80 text-mute hover:text-ink border border-line transition-all';
+        });
+        const activeBtn = document.getElementById('param-' + param);
+        if (activeBtn) {
+            activeBtn.className = 'param-btn px-3 py-1 rounded-full text-xs font-semibold bg-dark text-white shadow-sm transition-all';
+        }
+
+        const data = paramData[param];
+        if (data) {
+            document.getElementById('trend-max-val').textContent = data.max;
+            document.getElementById('trend-avg-val').textContent = data.avg;
+            document.getElementById('trend-min-val').textContent = data.min;
+
+            document.getElementById('svg-stroke').setAttribute('d', data.d);
+            document.getElementById('svg-area').setAttribute('d', data.d + ' L 530 180 L 36 180 Z');
+        }
+    }
+
+    function setRange(range) {
+        const btn24 = document.getElementById('btn-range-24');
+        const btn7 = document.getElementById('btn-range-7');
+        if (range === '24h') {
+            btn24.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-card text-ink shadow-sm transition-all';
+            btn7.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold text-mute hover:text-ink transition-all';
+        } else {
+            btn7.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-card text-ink shadow-sm transition-all';
+            btn24.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold text-mute hover:text-ink transition-all';
+        }
+    }
+</script>
+@endpush

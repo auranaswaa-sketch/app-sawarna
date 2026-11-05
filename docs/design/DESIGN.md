@@ -114,11 +114,14 @@ Antarmuka dirancang dalam 3 blok berurutan di samping navigasi kapsul:
 
 ## 5. Pedoman Pembaruan Halaman
 
-### 1. Dashboard Beranda (`dashboard.blade.php`)
-- Menampilkan Banner Status Keselamatan di posisi teratas layar.
-- 4 Kartu metrik berukuran besar dengan bahasa Indonesia sehari-hari.
-- Status sensor pantai diterjemahkan menjadi indikator baterai dan lampu hijau "Menyala Normal".
-- Menyediakan tombol bantuan langsung untuk menghubungi tim evakuasi / koordinator Pokdarwis.
+### 1. Dashboard Beranda (`dashboard.blade.php` & `index.html`)
+- Menggunakan gaya visual tactile squircle lengkap dengan telemetri live multi-parameter.
+- Header Bar dengan logo floral sunburst 8-kelopak, indikator live telemetri, banner status waspada cuaca, serta search capsule.
+- 3 Kartu Hero Utama: Suhu & Iklim Mikro, Tekanan Udara, serta Arah & Kecepatan Angin dengan indikator kompas dan gradien forest.
+- 4 Kartu Metrik Squircle: Curah Hujan, Kualitas Udara (PM2.5), Radiasi UV, dan Kelembapan Relatif.
+- 4 Tombol Aksi Cepat: Unduh Log CSV, Uji Sirine Posko, Laporkan Data Janggal, Kalibrasi Anemometer.
+- Grafik Tren Interaktif Multi-Parameter (Suhu, Kelembapan, Tekanan, Hujan, Angin) dengan kurva SVG dan nilai Min/Avg/Max dinamis.
+- Panel status node IoT (Edge node pantai, Sink node kantor, status cloud sync) serta 4 riwayat peringatan dini.
 
 ### 2. Manajemen Alat & Sensor (`devices/index.blade.php`)
 - Tampilan kartu sederhana: Tiap alat memiliki foto/ikon, nama lokasi posko, indikator daya baterai, dan teks "Berfungsi Baik" atau "Perlu Diperiksa".
