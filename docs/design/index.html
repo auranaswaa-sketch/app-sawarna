@@ -3,112 +3,314 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dashboard Cuaca Pantai Sawarna</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
+<title>Dashboard Cuaca & Sistem Peringatan Dini Pantai Sawarna</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- Tailwind CSS Standalone CDN -->
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
-tailwind.config={theme:{extend:{fontFamily:{sans:['"DM Sans"','system-ui','sans-serif']},
-colors:{bg:'var(--bg)',card:'var(--card)',ink:'var(--ink)',mute:'var(--mute)',line:'var(--line)',sea:'var(--sea)',deep:'var(--deep)',sky:'var(--sky)',tint:'var(--tint)',dark:'var(--dark)',ok:'var(--ok)',okbg:'var(--okbg)',warn:'var(--warn)',warnbg:'var(--warnbg)',bad:'var(--bad)',badbg:'var(--badbg)'}}}}
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{
+        sans:['"Plus Jakarta Sans"','"DM Sans"','system-ui','sans-serif']
+      },
+      colors:{
+        bg:'var(--bg)',
+        card:'var(--card)',
+        ink:'var(--ink)',
+        mute:'var(--mute)',
+        line:'var(--line)',
+        sea:'var(--sea)',
+        deep:'var(--deep)',
+        sky:'var(--sky)',
+        tint:'var(--tint)',
+        dark:'var(--dark)',
+        ok:'var(--ok)',
+        okbg:'var(--okbg)',
+        warn:'var(--warn)',
+        warnbg:'var(--warnbg)',
+        bad:'var(--bad)',
+        badbg:'var(--badbg)'
+      },
+      boxShadow:{
+        soft:'0 4px 20px -2px rgba(18, 38, 28, 0.04)',
+        card:'0 10px 30px -4px rgba(18, 38, 28, 0.05)',
+        floating:'0 20px 40px -10px rgba(18, 38, 28, 0.12)'
+      }
+    }
+  }
+}
 </script>
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-bg text-ink font-sans text-sm min-h-screen lg:h-screen lg:overflow-hidden">
-<div class="grid gap-4 p-4 lg:h-full lg:grid-cols-[auto_minmax(0,1fr)]">
+<body class="bg-bg text-ink font-sans text-sm min-h-screen">
+<div class="max-w-[1560px] mx-auto p-3 sm:p-5 lg:p-6 grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)]">
 
-  <!-- Sidebar (diisi app.js) -->
-  <nav id="side" aria-label="Menu" class="flex lg:flex-col items-center gap-2 bg-card rounded-[36px] p-2.5 text-mute overflow-auto"></nav>
+  <!-- Sidebar Capsule Nav (diisi app.js) -->
+  <aside id="side" aria-label="Menu Navigasi" class="flex lg:flex-col items-center justify-between lg:justify-start gap-2.5 sm:gap-3 bg-card rounded-[32px] sm:rounded-[36px] p-2 sm:p-2.5 text-mute shadow-soft border border-line/60 overflow-x-auto lg:overflow-visible sticky top-3 z-30"></aside>
 
-  <main class="grid gap-3.5 min-h-0 lg:grid-rows-[auto_auto_minmax(0,1.2fr)_minmax(0,1fr)]">
+  <!-- Main Canvas -->
+  <main class="grid gap-3.5 sm:gap-4.5 min-w-0">
 
     <!-- Header -->
-    <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-      <div>
-        <h1 class="text-2xl font-medium">Halo, Pengelola Sawarna!</h1>
-        <p class="text-mute text-[13.5px]">Pantau kondisi cuaca dan peringatan dini kawasan Pantai Sawarna · data contoh</p>
-      </div>
-      <div class="flex items-center gap-2.5">
-        <div class="flex flex-1 lg:flex-none lg:w-[300px] items-center gap-2 bg-card rounded-full py-1 pl-4 pr-1 text-mute">
-          <span class="flex-1">Cari data atau perangkat…</span>
-          <i data-i="search" class="w-9 h-9 rounded-full bg-dark text-white grid place-items-center"></i>
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Sunburst Floral Logo Icon from Image -->
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-tint text-sea grid place-items-center shrink-0 shadow-soft">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="2" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="22"></line>
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+            <line x1="2" y1="12" x2="6" y2="12"></line>
+            <line x1="18" y1="12" x2="22" y2="12"></line>
+            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+          </svg>
         </div>
-        <div data-i="msg" class="w-[46px] h-[46px] rounded-full bg-card grid place-items-center"></div>
-        <div data-i="bell" class="relative w-[46px] h-[46px] rounded-full bg-card grid place-items-center"><b class="absolute top-3 right-3 w-2 h-2 rounded-full bg-red-500"></b></div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 id="head-title" class="text-xl sm:text-2xl font-bold tracking-tight text-ink">Hello, Carlic!</h1>
+            <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-okbg text-ok">
+              <i class="fa-solid fa-circle text-[6px]"></i> Live IoT Telemetry
+            </span>
+          </div>
+          <p id="head-subtitle" class="text-mute text-xs sm:text-[13.5px] mt-0.5">Explore information and activity about your property</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
+        <!-- Switcher Mode Button -->
+        <button id="mode-btn" class="px-3 py-1.5 rounded-full bg-card hover:bg-tint text-mute hover:text-ink text-xs font-semibold border border-line shadow-soft flex items-center gap-1.5 transition-all">
+          <i class="fa-solid fa-repeat text-sea"></i>
+          <span id="mode-btn-text">Ganti Mode: Sawarna IoT</span>
+        </button>
+
+        <!-- Search Bar Capsule -->
+        <div class="flex items-center bg-card rounded-full pl-4 pr-1 py-1 shadow-soft border border-line/70 w-full sm:w-[260px]">
+          <input type="text" placeholder="Search..." class="bg-transparent text-xs sm:text-sm text-ink placeholder-mute focus:outline-none w-full">
+          <button class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-dark text-white grid place-items-center shrink-0 hover:opacity-90">
+            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Message Icon -->
+        <button class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-card hover:bg-tint text-ink border border-line/70 grid place-items-center shadow-soft shrink-0">
+          <i class="fa-regular fa-comment-dots text-sm sm:text-base"></i>
+          <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-card"></span>
+        </button>
+
+        <!-- Bell Icon -->
+        <button class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-card hover:bg-tint text-ink border border-line/70 grid place-items-center shadow-soft shrink-0">
+          <i class="fa-regular fa-bell text-sm sm:text-base"></i>
+          <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-sea ring-2 ring-card"></span>
+        </button>
       </div>
     </header>
 
-    <!-- Baris 1: kartu statistik (diisi app.js) -->
-    <section id="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 min-h-0"></section>
+    <!-- Baris 1: 4 Kartu Statistik (diisi app.js) -->
+    <section id="stats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4"></section>
 
-    <!-- Baris 2: tren, hujan, angin -->
-    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 min-h-0">
-      <div class="col-span-2 bg-card rounded-[20px] px-[18px] py-4 min-h-[280px] lg:min-h-0 flex flex-col">
-        <div class="flex flex-wrap items-center gap-2.5 mb-2">
-          <h2 class="text-[17px] font-bold">Tren</h2>
-          <span class="inline-flex items-center gap-1.5 text-[11.5px] font-bold px-2.5 py-0.5 rounded-full bg-warnbg text-warn"><i class="w-1.5 h-1.5 rounded-full bg-current"></i>Waspada</span>
-          <select id="ps" aria-label="Parameter" class="ml-auto"></select>
-          <select id="rs" aria-label="Rentang"><option value="24">24 jam</option><option value="168">7 hari</option></select>
+    <!-- Baris 2: Visualisasi Utama (Balance/Tren, Earnings/Hujan, Profile/Kompas) -->
+    <section class="grid grid-cols-1 lg:grid-cols-4 gap-3.5 sm:gap-4">
+      
+      <!-- Balance / Tren (2 Kolom) -->
+      <div class="lg:col-span-2 bg-card rounded-[20px] p-4 sm:p-5 flex flex-col justify-between border border-line/60 shadow-soft">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div class="flex items-center gap-2">
+            <h2 id="tren-title" class="text-base sm:text-[17px] font-bold text-ink">Balance</h2>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-okbg text-ok">
+              <i class="fa-solid fa-circle-check text-[11px]"></i>
+              <span id="tren-badge">On track</span>
+            </span>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="ps" aria-label="Parameter" class="text-xs bg-bg/80 text-ink border border-line rounded-lg px-2 py-1 font-medium focus:outline-none"></select>
+            <select id="rs" aria-label="Rentang" class="text-xs bg-bg/80 text-ink border border-line rounded-lg px-2 py-1 font-medium focus:outline-none">
+              <option value="24">Monthly / 24 Jam</option>
+              <option value="168">7 hari</option>
+            </select>
+          </div>
         </div>
-        <div class="flex gap-2.5 mb-1">
-          <div class="bg-bg rounded-xl px-3 py-1.5"><span class="text-mute text-xs">Maks</span> <b id="mx" class="text-[19px]"></b></div>
-          <div class="bg-bg rounded-xl px-3 py-1.5"><span class="text-mute text-xs">Rata-rata</span> <b id="av" class="text-[19px]"></b></div>
-          <div class="bg-bg rounded-xl px-3 py-1.5"><span class="text-mute text-xs">Min</span> <b id="mn" class="text-[19px]"></b></div>
+
+        <!-- Floating Pills (Saves & Balance from image) -->
+        <div class="flex flex-wrap gap-2.5 sm:gap-3 mb-2">
+          <div class="bg-bg/70 rounded-xl px-3.5 py-1.5 border border-line/70 flex items-center gap-2.5 shadow-sm">
+            <div>
+              <span class="text-mute text-[11px] block font-medium">Saves</span>
+              <b id="saves-val" class="text-sm sm:text-base font-bold text-ink">43.50%</b>
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">+2.45%</span>
+          </div>
+
+          <div class="bg-bg/70 rounded-xl px-3.5 py-1.5 border border-line/70 flex items-center gap-2.5 shadow-sm">
+            <div>
+              <span class="text-mute text-[11px] block font-medium">Balance</span>
+              <b id="balance-val" class="text-sm sm:text-base font-bold text-ink">$52,422</b>
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-badbg text-bad">-4.75%</span>
+          </div>
+
+          <div class="bg-bg/70 rounded-xl px-3.5 py-1.5 border border-line/70 flex items-center gap-2 shadow-sm">
+            <div>
+              <span class="text-mute text-[11px] block font-medium">Min</span>
+              <b id="mn" class="text-sm sm:text-base font-bold text-ink">14,0</b>
+            </div>
+          </div>
         </div>
-        <div id="cw" class="flex-1 min-h-0"><svg id="chart" role="img" aria-label="Grafik tren"></svg></div>
+
+        <!-- SVG Smooth Spline Chart -->
+        <div id="cw" class="relative w-full h-[180px] sm:h-[190px] mt-1">
+          <svg id="chart" class="w-full h-full overflow-visible" role="img" aria-label="Grafik tren"></svg>
+        </div>
       </div>
 
-      <div class="bg-card rounded-[20px] px-[18px] py-4 min-h-0 flex flex-col items-center justify-between text-center">
-        <div class="w-full text-left"><h2 class="text-[17px] font-bold">Curah hujan</h2><div class="text-mute text-[13px]">Batas waspada 10 mm/jam</div></div>
-        <svg class="w-4/5 max-w-[190px]" viewBox="0 0 200 110">
-          <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="var(--tint)" stroke-width="22" stroke-linecap="round"/>
-          <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="var(--sea)" stroke-width="22" stroke-linecap="round" pathLength="100" stroke-dasharray="32 100"/>
-          <text x="100" y="98" text-anchor="middle" style="font-size:30px;font-weight:700;fill:var(--ink)">3,2</text>
-        </svg>
-        <div class="text-mute">mm/jam · <b class="text-ok">Aman</b></div>
-      </div>
+      <!-- Curah Hujan / Earnings Radial Gauge (1 Kolom) -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 flex flex-col justify-between border border-line/60 shadow-soft text-center">
+        <div class="text-left w-full">
+          <h2 id="gauge-title" class="text-base sm:text-[17px] font-bold text-ink">Earnings</h2>
+          <span class="text-mute text-xs block mt-1">Total Expense</span>
+          <div id="gauge-val" class="text-xl sm:text-2xl font-bold text-ink tracking-tight mt-0.5">$6078.76</div>
+          <p id="gauge-sub" class="text-mute text-xs mt-1">Profit is 34% More than last Month</p>
+        </div>
 
-      <div class="bg-card rounded-[20px] px-[18px] py-4 min-h-0 flex flex-col items-center justify-between text-center">
-        <h2 class="w-full text-left text-[17px] font-bold">Arah angin</h2>
-        <svg viewBox="-80 -80 160 160" width="104" height="104" role="img" aria-label="Arah angin barat daya">
-          <circle r="68" fill="var(--bg)" stroke="var(--line)" stroke-width="3"/>
-          <text x="0" y="-52" text-anchor="middle">U</text><text x="56" y="4" text-anchor="middle">T</text><text x="0" y="64" text-anchor="middle">S</text><text x="-56" y="4" text-anchor="middle">B</text>
-          <g transform="rotate(225)"><path d="M0 -44 L9 9 L0 3 L-9 9Z" fill="var(--sea)"/></g>
-        </svg>
-        <div class="grid grid-cols-3 w-full gap-1.5">
-          <div><span class="text-mute text-xs">Arah</span><b class="block text-xl">225°</b></div>
-          <div><span class="text-mute text-xs">Hembusan</span><b class="block text-xl">41</b></div>
-          <div><span class="text-mute text-xs">Rata-rata</span><b class="block text-xl">28</b></div>
+        <!-- Radial Arc Gauge 80% from image -->
+        <div class="my-2 flex flex-col items-center justify-center">
+          <div class="relative w-44 h-24 sm:w-48 sm:h-28 flex items-end justify-center">
+            <svg class="w-full h-full overflow-visible" viewBox="0 0 200 110">
+              <path d="M 25 100 A 75 75 0 0 1 175 100" fill="none" stroke="var(--tint)" stroke-width="22" stroke-linecap="round"/>
+              <path d="M 25 100 A 75 75 0 0 1 175 100" fill="none" stroke="var(--sea)" stroke-width="22" stroke-linecap="round" pathLength="100" stroke-dasharray="80 100"/>
+              <text id="gauge-center" x="100" y="96" text-anchor="middle" font-size="28" font-weight="700" fill="var(--ink)">80%</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-1.5 text-xs text-mute font-medium">
+          <span id="gauge-footer">mm/jam · <b class="text-ok">Status Normal</b></span>
         </div>
       </div>
+
+      <!-- User Profile / Arah Angin Compass Card (1 Kolom) -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 flex flex-col justify-between border border-line/60 shadow-soft text-center">
+        <div class="flex flex-col items-center">
+          <div class="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-tint border-2 border-white shadow-soft flex items-center justify-center mb-1.5">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Carlic Bolomboy" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-sm sm:text-base font-bold text-ink">Carlic Bolomboy</h3>
+          <span class="text-mute text-xs">carlic@gmail.com</span>
+        </div>
+
+        <!-- Dial Kompas SVG -->
+        <div class="my-2 flex flex-col items-center">
+          <div class="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full border-2 border-line bg-bg/50 grid place-items-center shadow-inner">
+            <span class="absolute top-1 text-[10px] font-bold text-mute">U</span>
+            <span class="absolute right-1.5 text-[10px] font-bold text-mute">T</span>
+            <span class="absolute bottom-1 text-[10px] font-bold text-mute">S</span>
+            <span class="absolute left-1.5 text-[10px] font-bold text-mute">B</span>
+            <div class="w-full h-full grid place-items-center transition-transform duration-700" style="transform: rotate(225deg)">
+              <svg class="w-5 h-12 text-sea" viewBox="0 0 24 56" fill="currentColor">
+                <polygon points="12,0 20,40 12,32 4,40"/>
+                <polygon points="12,56 16,40 12,36 8,40" fill="var(--mute)" opacity="0.6"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Columns Footer from image -->
+        <div class="grid grid-cols-3 gap-1 pt-2 border-t border-line/70 w-full text-center">
+          <div><span id="col1-t" class="text-mute text-[11px] block font-medium">Projects</span><b id="col1-v" class="text-base sm:text-lg font-bold text-ink">26</b></div>
+          <div><span id="col2-t" class="text-mute text-[11px] block font-medium">Followers</span><b id="col2-v" class="text-base sm:text-lg font-bold text-ink">356</b></div>
+          <div><span id="col3-t" class="text-mute text-[11px] block font-medium">Following</span><b id="col3-v" class="text-base sm:text-lg font-bold text-ink">68</b></div>
+        </div>
+      </div>
+
     </section>
 
-    <!-- Baris 3: perangkat, peringatan, data cloud -->
-    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 min-h-0">
-      <div class="col-span-2 bg-card rounded-[20px] px-[18px] py-4 min-h-0 flex flex-col">
-        <div class="flex items-center mb-2"><h2 class="text-[17px] font-bold">Perangkat terpasang</h2><span class="ml-auto text-mute text-[13px]">Diperbarui 1 menit lalu</span></div>
-        <div class="grid sm:grid-cols-3 gap-2.5 flex-1 min-h-0">
-          <div class="bg-bg rounded-2xl p-3 flex flex-col gap-1 min-w-0"><b><i class="inline-block w-2 h-2 rounded-full bg-ok mr-1.5"></i>Edge node pantai</b><div class="h-1.5 rounded bg-line overflow-hidden"><i class="block h-full w-[78%] bg-sea"></i></div><span class="text-mute text-[13px]">Baterai 78% · panel surya mengisi</span><span class="text-mute text-[13px]">LoRa −104 dBm</span></div>
-          <div class="bg-bg rounded-2xl p-3 flex flex-col gap-1 min-w-0"><b><i class="inline-block w-2 h-2 rounded-full bg-ok mr-1.5"></i>Sink node kantor</b><div class="h-1.5 rounded bg-line overflow-hidden"><i class="block h-full w-[99%] bg-sea"></i></div><span class="text-mute text-[13px]">Paket diterima 99,4%</span><span class="text-mute text-[13px]">Internet 4G stabil</span></div>
-          <div class="bg-bg rounded-2xl p-3 flex flex-col gap-1 min-w-0"><b><i class="inline-block w-2 h-2 rounded-full bg-warn mr-1.5"></i>Edge computing</b><div class="h-1.5 rounded bg-line overflow-hidden"><i class="block h-full w-[63%] bg-sea"></i></div><span class="text-mute text-[13px]">Penyimpanan 63%</span><span class="text-mute text-[13px]">38 data antre ke cloud</span></div>
+    <!-- Baris 3: Credit Cards / Nodes, Transfers / Peringatan, Keep Safe / Cloud -->
+    <section class="grid grid-cols-1 lg:grid-cols-4 gap-3.5 sm:gap-4">
+      
+      <!-- Available Credit Card in Wallet / Perangkat (Span 2 Kolom) -->
+      <div class="lg:col-span-2 bg-card rounded-[20px] p-4 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-5 border border-line/60 shadow-soft relative overflow-hidden">
+        <div class="flex-1 z-10 w-full md:w-auto">
+          <h2 id="w-title" class="text-base sm:text-[17px] font-bold text-ink leading-snug">Available Credit<br>Card in Wallet</h2>
+          <p id="w-desc" class="text-mute text-xs sm:text-[13px] mt-2 max-w-[280px] leading-relaxed">
+            Lorem ipsum dolor sit amet consectetur. Facilisis tincidunt purus id hendrerit cras massa sollicitudin adipiscing.
+          </p>
+          <button id="w-btn" class="mt-4 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-sea hover:opacity-90 text-white font-semibold text-xs tracking-wide shadow-sm flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-plus text-[10px]"></i> Add New Card +
+          </button>
+        </div>
+
+        <!-- 3 Stacked Isometric Cards -->
+        <div class="relative w-full md:w-[280px] h-[150px] sm:h-[170px] flex items-center justify-center shrink-0">
+          <div class="absolute w-[185px] sm:w-[200px] h-[110px] sm:h-[120px] rounded-2xl bg-gradient-to-br from-neutral-800 to-neutral-950 text-white p-3 shadow-card transform -rotate-12 translate-x-5 translate-y-6 opacity-90 border border-white/10">
+            <div class="flex justify-between items-center text-[9px] text-white/60"><span>Master Card</span><i class="fa-solid fa-wifi text-[10px]"></i></div>
+            <div class="mt-4 font-mono text-[10px] tracking-widest text-white/80">**** 9012</div>
+          </div>
+          <div class="absolute w-[185px] sm:w-[200px] h-[110px] sm:h-[120px] rounded-2xl bg-gradient-to-br from-[#3b5949] to-[#25392e] text-white p-3 shadow-card transform -rotate-6 translate-x-2 translate-y-2 opacity-95 border border-white/15">
+            <div class="flex justify-between items-center text-[9px] text-white/70"><span>Master Card</span><i class="fa-solid fa-signal text-[10px]"></i></div>
+            <div class="mt-4 font-mono text-[10px] tracking-widest text-white/90">**** 5678</div>
+          </div>
+          <div class="absolute w-[185px] sm:w-[200px] h-[110px] sm:h-[120px] rounded-2xl bg-white/40 backdrop-blur-md border border-white/80 text-ink p-3 shadow-floating transform rotate-0 hover:scale-105 transition-transform">
+            <div class="flex justify-between items-center text-[9px] font-semibold text-ink/70"><span>LARA STEINER</span><i class="fa-solid fa-rss text-sea text-[10px]"></i></div>
+            <div class="mt-3 font-mono text-[11px] font-bold tracking-widest text-ink">1234 1234 1234 1234</div>
+            <div class="mt-3 flex justify-between items-end"><span class="text-[8px] text-mute uppercase">Master Card</span><div class="flex -space-x-1"><span class="w-3.5 h-3.5 rounded-full bg-rose-500/80 inline-block"></span><span class="w-3.5 h-3.5 rounded-full bg-amber-500/80 inline-block"></span></div></div>
+          </div>
         </div>
       </div>
 
-      <div class="bg-card rounded-[20px] px-[18px] py-4 min-h-0 flex flex-col">
-        <h2 class="text-[17px] font-bold mb-1.5">Peringatan</h2>
-        <ul class="flex-1 min-h-0 flex flex-col justify-around gap-2">
-          <li class="flex items-center gap-2.5 border-l-[3px] border-sea pl-2.5"><div class="flex-1 min-w-0"><b class="block font-medium">Angin kencang 34 km/jam</b><span class="text-mute text-xs">Hari ini, 09.40</span></div><span class="text-[11.5px] font-bold px-2.5 py-0.5 rounded-full bg-warnbg text-warn">Aktif</span></li>
-          <li class="flex items-center gap-2.5 border-l-[3px] border-sea pl-2.5"><div class="flex-1 min-w-0"><b class="block font-medium">Hujan lebat 18 mm/jam</b><span class="text-mute text-xs">3 Nov, 16.10</span></div><span class="text-[11.5px] font-bold px-2.5 py-0.5 rounded-full bg-okbg text-ok">Selesai</span></li>
-          <li class="flex items-center gap-2.5 border-l-[3px] border-sea pl-2.5"><div class="flex-1 min-w-0"><b class="block font-medium">Anomali sensor tekanan</b><span class="text-mute text-xs">2 Nov, 22.05</span></div><span class="text-[11.5px] font-bold px-2.5 py-0.5 rounded-full bg-okbg text-ok">Selesai</span></li>
-        </ul>
+      <!-- Your Transfers / Peringatan (1 Kolom) -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 flex flex-col justify-between border border-line/60 shadow-soft">
+        <h2 id="tx-title" class="text-base sm:text-[17px] font-bold text-ink mb-2">Your Transfers</h2>
+        <div class="flex flex-col gap-3 my-1">
+          <div class="flex items-center justify-between gap-2 pb-2 border-b border-line/60">
+            <div><b id="tx1-t" class="text-xs sm:text-sm font-semibold text-ink block leading-tight">From Anna Jones</b><span id="tx1-s" class="text-[11px] text-mute">Today, 14:34</span></div>
+            <span id="tx1-b" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">+2.45%</span>
+          </div>
+          <div class="flex items-center justify-between gap-2 pb-2 border-b border-line/60">
+            <div><b id="tx2-t" class="text-xs sm:text-sm font-semibold text-ink block leading-tight">To Carlos Brown III</b><span id="tx2-s" class="text-[11px] text-mute">Today, 15:23</span></div>
+            <span id="tx2-b" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-badbg text-bad">-4.75%</span>
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <div><b id="tx3-t" class="text-xs sm:text-sm font-semibold text-ink block leading-tight">From Joel Cannan</b><span id="tx3-s" class="text-[11px] text-mute">Today, 17:54</span></div>
+            <span id="tx3-b" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-okbg text-ok">+2.45%</span>
+          </div>
+        </div>
       </div>
 
-      <div class="bg-card rounded-[20px] px-[18px] py-4 min-h-0 flex flex-col items-center justify-between text-center">
-        <div data-i="db" class="w-[52px] h-[52px] rounded-full bg-tint text-sea grid place-items-center"></div>
-        <div><h2 class="text-[17px] font-bold">Data cloud</h2><p class="text-mute text-[13px]">38 data menunggu sinkron.<br>Sinkron terakhir 12 menit lalu.</p></div>
-        <button class="text-white font-bold text-[13px] rounded-[10px] px-4 py-2.5 bg-gradient-to-br from-sea to-deep">Lihat semua data</button>
+      <!-- Keep you safe! / Data Cloud (1 Kolom) -->
+      <div class="bg-card rounded-[20px] p-4 sm:p-5 flex flex-col items-center justify-between text-center border border-line/60 shadow-soft">
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-tint text-sea grid place-items-center shadow-soft mb-1">
+          <svg class="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"></path>
+            <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"></path>
+            <path d="M8.65 22c.21-.66.45-1.32.75-2"></path>
+            <path d="M9 6.8a6 6 0 0 1 9 5.2v2"></path>
+            <path d="M14 13a2 2 0 0 0-2-2 2 2 0 0 0-2 2v4"></path>
+            <path d="M12 21a8 8 0 0 0 7-4"></path>
+            <path d="M17 18a4 4 0 0 0-4-4"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 id="sec-t" class="text-base sm:text-[17px] font-bold text-ink">Keep you safe!</h3>
+          <p id="sec-s" class="text-mute text-xs sm:text-[13px] mt-1">Update your security password</p>
+        </div>
+        <button id="sec-b" class="w-full mt-3 py-2.5 px-4 rounded-xl bg-sea hover:opacity-90 text-white text-xs font-semibold shadow-sm transition-all">
+          Update Your Security
+        </button>
       </div>
+
     </section>
+
   </main>
 </div>
+
 <script src="app.js"></script>
 </body>
 </html>

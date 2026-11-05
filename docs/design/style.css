@@ -1,11 +1,87 @@
-/* Token warna (dipakai Tailwind lewat var(--...)). Ubah di sini untuk ganti tema. */
-:root{--bg:#e3eef2;--card:#ffffff;--ink:#0d2f44;--mute:#7a97a6;--line:#e1edf2;--sea:#0e86b8;--deep:#0a5c8a;--sky:#8fd3ee;--tint:#e6f4fa;--dark:#0d2f44;--ok:#1b9a72;--okbg:#dcf5ec;--warn:#c9831a;--warnbg:#fff1d6;--bad:#c23b3b;--badbg:#fbe3e3}
-@media (prefers-color-scheme:dark){:root{--bg:#081c27;--card:#0f2f41;--ink:#e3f3fa;--mute:#85a9bb;--line:#1b4258;--sea:#4cc0ea;--deep:#0b4d73;--sky:#3aa6d4;--tint:#12384d;--dark:#04121a;--ok:#4fd0a0;--okbg:#10382e;--warn:#efb04e;--warnbg:#3b2f14;--bad:#f08080;--badbg:#3d1f1f}}
-body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-svg{display:block}
-svg text{fill:var(--mute);font-size:10px;font-family:inherit}
-.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-#cw{position:relative}
-#chart{position:absolute;inset:0;width:100%;height:100%}
-select{background:transparent;color:var(--mute);font-size:12.5px;cursor:pointer}
-button:focus-visible,select:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+/* Token warna & tema sesuai referensi gambar (Sage & Tactile Squircle) */
+:root {
+  --bg: #e8eae3;         /* Kanvas lembut bernuansa sage/sand */
+  --card: #ffffff;       /* Kartu putih bersih */
+  --ink: #1b2d24;        /* Teks gelap kontras tinggi */
+  --mute: #7a8c82;       /* Teks sekunder abu-abu kehijauan */
+  --line: #e2e6e0;       /* Garis pemisah halus */
+  --sea: #4a6f5d;        /* Hijau sage/forest primer */
+  --deep: #325041;       /* Deep forest hijau gelap untuk gradient hero card */
+  --sky: #88b19d;        /* Aksen grafik */
+  --tint: #eff3ee;       /* Latar wadah ikon sirkular */
+  --dark: #1a2c22;       /* Tombol aktif navigasi & pencarian */
+  --ok: #2c7a51;         /* Status hijau aman (+2.45%) */
+  --okbg: #e6f3ec;       /* Background badge hijau */
+  --warn: #c9831a;       /* Amber status waspada */
+  --warnbg: #fff1d6;     /* Background badge waspada */
+  --bad: #c54646;        /* Merah status penurunan (-4.75%) */
+  --badbg: #fdebec;      /* Background badge merah */
+}
+
+/* Opsi tema maritime (laut Sawarna) */
+[data-theme="maritime"] {
+  --bg: #e3eef2;
+  --card: #ffffff;
+  --ink: #0d2f44;
+  --mute: #7a97a6;
+  --line: #e1edf2;
+  --sea: #0e86b8;
+  --deep: #0a5c8a;
+  --sky: #8fd3ee;
+  --tint: #e6f4fa;
+  --dark: #0d2f44;
+  --ok: #1b9a72;
+  --okbg: #dcf5ec;
+  --warn: #c9831a;
+  --warnbg: #fff1d6;
+  --bad: #c23b3b;
+  --badbg: #fbe3e3;
+}
+
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+svg {
+  display: block;
+}
+
+svg text {
+  fill: var(--mute);
+  font-size: 10px;
+  font-family: inherit;
+}
+
+.ic {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#cw {
+  position: relative;
+}
+
+#chart {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+select {
+  background: transparent;
+  color: var(--mute);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+button:focus-visible, select:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 2px;
+}
