@@ -31,9 +31,9 @@
             </button>
 
             <!-- 5. Users / Tim Pengelola -->
-            <button aria-label="Tim Pengelola" title="Petugas Lapangan & Pengelola" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all" onclick="switchTab('profile')">
+            <a href="{{ route('profile.index') }}" aria-label="Profil Administrator" title="Detail Profil Pengelola & Akses" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
                 <i class="fa-solid fa-user-shield text-sm sm:text-base"></i>
-            </button>
+            </a>
 
             <!-- 6. Calendar / Log Riwayat -->
             <button aria-label="Log & Peringatan" title="Log Peringatan Dini" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all" onclick="switchTab('thresholds')">
@@ -54,9 +54,9 @@
             </a>
 
             <!-- 9. Avatar / Location Profile Badge -->
-            <div title="Stasiun Sawarna (SW)" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-gradient-to-br from-sea to-deep border-2 border-white/70 shadow-sm grid place-items-center text-white font-bold text-xs cursor-pointer hover:ring-2 ring-sea transition-all">
+            <a href="{{ route('profile.index') }}" title="Profil Administrator Sawarna" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-gradient-to-br from-sea to-deep border-2 border-white/70 shadow-sm grid place-items-center text-white font-bold text-xs cursor-pointer hover:ring-2 ring-sea transition-all">
                 <span>SW</span>
-            </div>
+            </a>
         </aside>
 
         <!-- ================= MAIN SETTINGS CONTENT ================= -->

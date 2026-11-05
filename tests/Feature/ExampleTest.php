@@ -13,3 +13,12 @@ test('the admin settings page returns a successful response', function () {
     $response->assertSee('Pengaturan Sistem & Ambang Batas');
     $response->assertSee('Kecepatan Angin');
 });
+
+test('the admin profile detail page returns a successful response', function () {
+    $response = $this->get('/profile');
+
+    $response->assertStatus(200);
+    $response->assertSee('Profil Administrator');
+    $response->assertSee('Ahmad Fauzi');
+    $response->assertSee('Pos Pantau Pantai Ciantir');
+});
