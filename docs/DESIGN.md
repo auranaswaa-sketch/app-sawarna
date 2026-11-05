@@ -71,27 +71,43 @@ font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
 
 ---
 
-## 4. Tata Letak Dashboard Sederhana (3 Blok Inti)
+## 4. Tata Letak Dashboard & Navigasi Kapsul Vertikal
 
-Antarmuka dirancang dalam 3 blok horizontal berurutan sesuai prioritas operator:
+### A. Sidebar Navigasi Kapsul Vertikal (Floating Capsule Sidebar)
+Navigasi utama mempertahankan identitas visual khas Sawarna berbentuk kapsul pil vertikal (`rounded-[32px] sm:rounded-[36px] bg-card p-2 sm:p-2.5 shadow-soft border border-line/60`):
+- **Bentuk Tombol**: Sirkular ergonomis (`w-10 h-10 sm:w-11 sm:h-11 rounded-full`).
+- **State Aktif**: Lingkaran gelap tegas `bg-dark text-white shadow-md` dengan transisi halus (`hover:scale-105 active:scale-95`).
+- **State Non-Aktif**: `text-mute hover:bg-tint hover:text-sea`.
+- **Urutan Ikon Navigasi (Top-to-Bottom)**:
+  1. `fa-table-cells-large`: Dashboard Beranda Cuaca
+  2. `fa-microchip`: Perangkat & Node Sensor Lapangan
+  3. `fa-chart-line`: Grafik Tren & Riwayat Cuaca
+  4. `fa-tower-broadcast`: Stasiun & Titik Pantau Pesisir
+  5. `fa-user-shield`: Profil Petugas Posko & Akses Pengelola
+  6. `fa-calendar-check`: Log Riwayat & Kalender Peringatan
+  *(Pemisah / Desktop Vertical Spacer: `hidden lg:block flex-1 min-h-[40px]`)*
+  7. `fa-gear`: Pengaturan Ambang Batas Sensor & Sistem
+  8. `fa-arrow-right-from-bracket`: Keluar Sesi
+  9. Badge Inisial `SW`: Avatar Posko Sawarna lingkaran gelap berlatar `--dark`
+
+### B. Tata Letak Dashboard Ramah Operator (3 Blok Inti)
+Antarmuka dirancang dalam 3 blok berurutan di samping navigasi kapsul:
 
 ```
-+-----------------------------------------------------------------------------------------+
-| [NAVBAR ATAS / SAMPING]  Logo Sawarna  |  Beranda  |  Alat Sensor  |  Setelan  |  Profil |
-+-----------------------------------------------------------------------------------------+
-| BLOK 1: BANNER KESELAMATAN PANTAI UTAMA (Status Hidup & Instruksi Petugas)              |
-| [!] STATUS KAWASAN: WASPADA ANGIN KENCANG (34 km/jam)                                   |
-|     Instruksi: Pasang bendera kuning di Pantai Ciantir. Nelayan perahu jukung waspada.  |
-|     [Tombol: Kirim WhatsApp Pengelola]    [Tombol: Laporkan Kondisi]                    |
-+-----------------------------------------------------------------------------------------+
-| BLOK 2: 4 KARTU METRIK CUACA UTAMA (Besar, Jelas, Disertai Penjelasan Bahasa Manusia)   |
-| [ ANGIN: 34 km/j ]   [ HUJAN: 3,2 mm/j ]   [ SUHU: 29,4 °C ]   [ GELOMBANG / OMBAK ]    |
-| Status: Waspada      Status: Aman Gerimis  Status: Nyaman       Status: Laut Tenang     |
-+-----------------------------------------------------------------------------------------+
-| BLOK 3: KONDISI ALAT SENSOR & BANTUAN LAPANGAN                                          |
-| [ Sensor di Pantai: MENYALA (Baterai 78% - Panel Surya Mengisi) - Sinyal Bagus ]        |
-| [ Gateway Kantor: NORMAL (Internet 4G Aktif) - Pengiriman Data Berjalan Baik ]          |
-+-----------------------------------------------------------------------------------------+
++----+  +-----------------------------------------------------------------------------------------+
+|    |  | BLOK 1: BANNER KESELAMATAN PANTAI UTAMA (Status Hidup & Instruksi Petugas)              |
+| ⊞  |  | [!] STATUS KAWASAN: WASPADA ANGIN KENCANG (34 km/jam)                                   |
+| ⚙  |  |     Instruksi: Pasang bendera kuning di Pantai Ciantir. Nelayan perahu jukung waspada.  |
+| 📈 |  |     [Tombol: Kirim WhatsApp Pengelola]    [Tombol: Laporkan Kondisi]                    |
+| 📡 |  +-----------------------------------------------------------------------------------------+
+| 🛡  |  | BLOK 2: 4 KARTU METRIK CUACA UTAMA (Besar, Jelas, Disertai Penjelasan Bahasa Manusia)   |
+| 📅 |  | [ ANGIN: 34 km/j ]   [ HUJAN: 3,2 mm/j ]   [ SUHU: 29,4 °C ]   [ GELOMBANG / OMBAK ]    |
+|    |  | Status: Waspada      Status: Aman Gerimis  Status: Nyaman       Status: Laut Tenang     |
+| -- |  +-----------------------------------------------------------------------------------------+
+| ⚙  |  | BLOK 3: KONDISI ALAT SENSOR & BANTUAN LAPANGAN                                          |
+| ➔  |  | [ Sensor di Pantai: MENYALA (Baterai 78% - Panel Surya Mengisi) - Sinyal Bagus ]        |
+| SW |  | [ Gateway Kantor: NORMAL (Internet 4G Aktif) - Pengiriman Data Berjalan Baik ]          |
++----+  +-----------------------------------------------------------------------------------------+
 ```
 
 ---

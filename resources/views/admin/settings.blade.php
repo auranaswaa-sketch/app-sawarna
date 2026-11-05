@@ -5,78 +5,9 @@
 @section('content')
 <div class="bg-bg text-ink min-h-[calc(100vh-2.5rem)] flex flex-col justify-between" id="settings-root">
 
-    <div class="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
 
-        <!-- ================= SIDEBAR NAVIGASI RAMAH OPERATOR ================= -->
-        <aside class="bg-card rounded-[24px] p-3 sm:p-4 shadow-soft border border-line flex flex-col gap-2 sticky top-3 z-30">
-            <!-- Logo & Posko Identitas -->
-            <div class="flex items-center gap-3 px-2 py-2 mb-2 border-b border-line/60">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sea to-deep text-white grid place-items-center font-extrabold text-sm shadow-soft shrink-0">
-                    SW
-                </div>
-                <div class="min-w-0">
-                    <h2 class="font-extrabold text-sm text-ink truncate leading-tight">Posko Sawarna</h2>
-                    <span class="text-[11px] text-mute font-medium truncate block">Pantai Ciantir · POKDARWIS</span>
-                </div>
-            </div>
-
-            <!-- Menu Navigasi dengan Ikon + Teks Jelas -->
-            <nav class="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0" aria-label="Menu Utama">
-                <!-- 1. Beranda -->
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-house text-base w-5 text-center text-sea"></i>
-                    <span>Beranda Cuaca</span>
-                </a>
-
-                <!-- 2. Alat Sensor -->
-                <a href="{{ route('devices.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-tower-broadcast text-base w-5 text-center text-sea"></i>
-                    <span>Kondisi Sensor</span>
-                </a>
-
-                <!-- 3. Grafik & Riwayat -->
-                <a href="{{ route('analytics.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-chart-line text-base w-5 text-center text-sea"></i>
-                    <span>Grafik & Riwayat</span>
-                </a>
-
-                <!-- 4. Pengaturan (Active) -->
-                <a href="{{ route('settings.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-dark text-white shadow-sm shrink-0 transition-all">
-                    <i class="fa-solid fa-sliders text-base w-5 text-center"></i>
-                    <span>Atur Batas Peringatan</span>
-                </a>
-
-                <!-- 5. Profil Petugas -->
-                <a href="{{ route('profile.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-user-shield text-base w-5 text-center text-sea"></i>
-                    <span>Profil Petugas</span>
-                </a>
-            </nav>
-
-            <!-- Card Bantuan Petugas Lapangan -->
-            <div class="hidden lg:block mt-6 p-3.5 rounded-2xl bg-tint/70 border border-line/60">
-                <div class="flex items-center gap-2 text-sea font-bold text-xs mb-1">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Panduan Nilai Aman</span>
-                </div>
-                <p class="text-[11px] text-mute mb-2">Gunakan tombol "Kembalikan ke Standar BMKG" jika tidak yakin.</p>
-                <button type="button" onclick="alert('Nilai ambang batas dikembalikan ke rekomendasi BMKG Maritim.')" class="w-full text-center py-2 px-3 rounded-lg bg-card border border-line text-ink text-xs font-bold hover:bg-tint transition-all">
-                    Standar BMKG
-                </button>
-            </div>
-
-            <!-- Petugas Sedang Piket -->
-            <div class="hidden lg:flex items-center gap-2.5 pt-3 mt-auto border-t border-line/60 px-1">
-                <div class="w-8 h-8 rounded-full bg-tint text-sea grid place-items-center font-bold text-xs shrink-0">
-                    AF
-                </div>
-                <div class="min-w-0">
-                    <span class="text-[11px] text-mute block leading-none">Petugas Jaga:</span>
-                    <b class="text-xs text-ink truncate block mt-0.5">Ahmad Fauzi</b>
-                </div>
-                <span class="w-2.5 h-2.5 rounded-full bg-ok ml-auto" title="Online"></span>
-            </div>
-        </aside>
+        @include('partials.sidebar')
 
         <!-- ================= KONTEN UTAMA SETTING ================= -->
         <main class="flex flex-col gap-4 min-w-0">

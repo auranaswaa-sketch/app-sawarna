@@ -5,98 +5,9 @@
 @section('content')
 <div class="bg-bg text-ink min-h-[calc(100vh-2.5rem)] flex flex-col justify-between" id="devices-root">
 
-    <div class="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)] gap-4 lg:gap-6 items-start">
 
-        <!-- ================= SIDEBAR NAVIGASI RAMAH OPERATOR ================= -->
-        <aside class="bg-card rounded-[24px] p-3 sm:p-4 shadow-soft border border-line flex flex-col gap-2 sticky top-3 z-30">
-            <!-- Logo & Posko Identitas -->
-            <div class="flex items-center gap-3 px-2 py-2 mb-2 border-b border-line/60">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sea to-deep text-white grid place-items-center font-extrabold text-sm shadow-soft shrink-0">
-                    SW
-                </div>
-                <div class="min-w-0">
-                    <h2 class="font-extrabold text-sm text-ink truncate leading-tight">Posko Sawarna</h2>
-                    <span class="text-[11px] text-mute font-medium truncate block">Pantai Ciantir · POKDARWIS</span>
-                </div>
-            </div>
-
-            <!-- Menu Navigasi dengan Ikon + Teks Jelas -->
-            <nav class="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0" aria-label="Menu Utama">
-                <!-- 1. Beranda -->
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-house text-base w-5 text-center text-sea"></i>
-                    <span>Beranda Cuaca</span>
-                </a>
-
-                <!-- 2. Alat Sensor (Active) -->
-                <a href="{{ route('devices.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-dark text-white shadow-sm shrink-0 transition-all">
-                    <i class="fa-solid fa-tower-broadcast text-base w-5 text-center"></i>
-                    <span>Kondisi Sensor</span>
-                </a>
-
-                <!-- 3. Grafik & Riwayat -->
-                <a href="{{ route('analytics.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-chart-line text-base w-5 text-center text-sea"></i>
-                    <span>Grafik & Riwayat</span>
-                </a>
-
-                <!-- 4. Pengaturan -->
-                <a href="{{ route('settings.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-sliders text-base w-5 text-center text-sea"></i>
-                    <span>Atur Batas Peringatan</span>
-                </a>
-
-                <!-- 5. Profil Petugas -->
-                <a href="{{ route('profile.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-mute hover:bg-tint hover:text-ink shrink-0 transition-all">
-                    <i class="fa-solid fa-user-shield text-base w-5 text-center text-sea"></i>
-                    <span>Profil Petugas</span>
-                </a>
-            </nav>
-
-            <!-- Card Bantuan Petugas Lapangan -->
-            <div class="hidden lg:block mt-6 p-3.5 rounded-2xl bg-tint/70 border border-line/60">
-                <div class="flex items-center gap-2 text-sea font-bold text-xs mb-1">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <span>Bantuan Alat</span>
-                </div>
-                <p class="text-[11px] text-mute mb-2">Jika sensor pantai tidak mengirim data &gt; 10 menit, hubungi teknisi.</p>
-                <a href="tel:+6281298765432" class="block w-full text-center py-2 px-3 rounded-lg bg-sea text-white text-xs font-bold hover:bg-deep transition-all">
-                    Lapor Alat Rusak
-                </a>
-            </div>
-
-<<<<<<< Updated upstream
-            <!-- Flexible Spacer on Desktop -->
-            <div class="hidden lg:block flex-1 min-h-[40px]"></div>
-
-            <!-- 7. Settings -->
-            <a href="{{ route('settings.index') }}" aria-label="Pengaturan" title="Pengaturan Ambang Batas Sensor" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-sea grid place-items-center transition-all">
-                <i class="fa-solid fa-gear text-base sm:text-lg"></i>
-            </a>
-
-            <!-- 8. Logout -->
-            <button aria-label="Keluar" title="Keluar Sesi" class="nav-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full text-mute hover:bg-tint hover:text-bad grid place-items-center transition-all">
-                <i class="fa-solid fa-arrow-right-from-bracket text-base sm:text-lg"></i>
-            </button>
-
-            <!-- 9. Avatar / Location Profile Badge -->
-            <a href="{{ route('profile.index') }}" title="Profil Administrator Sawarna" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-gradient-to-br from-sea to-deep border-2 border-white/70 shadow-sm grid place-items-center text-white font-bold text-xs cursor-pointer hover:ring-2 ring-sea transition-all">
-                <span>SW</span>
-            </a>
-=======
-            <!-- Petugas Sedang Piket -->
-            <div class="hidden lg:flex items-center gap-2.5 pt-3 mt-auto border-t border-line/60 px-1">
-                <div class="w-8 h-8 rounded-full bg-tint text-sea grid place-items-center font-bold text-xs shrink-0">
-                    AF
-                </div>
-                <div class="min-w-0">
-                    <span class="text-[11px] text-mute block leading-none">Petugas Jaga:</span>
-                    <b class="text-xs text-ink truncate block mt-0.5">Ahmad Fauzi</b>
-                </div>
-                <span class="w-2.5 h-2.5 rounded-full bg-ok ml-auto" title="Online"></span>
-            </div>
->>>>>>> Stashed changes
-        </aside>
+        @include('partials.sidebar')
 
         <!-- ================= KONTEN UTAMA MANAJEMEN ALAT ================= -->
         <main class="flex flex-col gap-4 min-w-0">
@@ -162,7 +73,7 @@
 
             <!-- ---------- 2 NODE UTAMA: PANTAI & KANTOR ---------- -->
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                
+
                 <!-- NODE 1: TIANG SENSOR PANTAI CIANTIR -->
                 <div class="bg-card rounded-[20px] p-5 border border-line shadow-soft flex flex-col justify-between gap-4">
                     <div>

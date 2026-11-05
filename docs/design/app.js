@@ -17,26 +17,28 @@
   var B = 'w-10 h-10 sm:w-11 sm:h-11 rounded-full grid place-items-center transition-all ';
   var isPerangkat = window.location.pathname.indexOf('perangkat') !== -1;
   var isGrafik = window.location.pathname.indexOf('grafik') !== -1;
+  var isSettings = window.location.pathname.indexOf('settings') !== -1;
+  var isProfile = window.location.pathname.indexOf('profile') !== -1;
+  var isIndex = !isPerangkat && !isGrafik && !isSettings && !isProfile;
+
   var navItems = [
-    { id: 'grid', label: 'Dashboard', url: 'index.html', active: !isPerangkat && !isGrafik },
+    { id: 'grid', label: 'Dashboard', url: 'index.html', active: isIndex },
     { id: 'cpu', label: 'Perangkat Sensor', url: 'perangkat.html', active: isPerangkat },
     { id: 'chart', label: 'Grafik Tren', url: 'grafik.html', active: isGrafik },
-    { id: 'tower', label: 'Stasiun Pesisir' },
-    { id: 'shield', label: 'Tim Pengelola' },
-    { id: 'cal', label: 'Log Riwayat' }
+    { id: 'tower', label: 'Stasiun Pesisir', url: 'perangkat.html', active: false },
+    { id: 'shield', label: 'Profil Petugas', url: 'profile.html', active: isProfile },
+    { id: 'cal', label: 'Log Riwayat', url: 'grafik.html', active: false }
   ];
 
   var sideEl = document.getElementById('side');
   if (sideEl) {
     sideEl.innerHTML = navItems.map(function(item) {
-      var tag = item.url ? 'a' : 'button';
-      var href = item.url ? ' href="' + item.url + '"' : '';
-      return '<' + tag + href + ' aria-label="' + item.label + '" title="' + item.label + '" class="' + B + (item.active ? 'bg-dark text-white shadow-md' : 'text-mute hover:bg-tint hover:text-sea') + '">' + ic(item.id) + '</' + tag + '>';
+      return '<a href="' + item.url + '" aria-label="' + item.label + '" title="' + item.label + '" class="' + B + (item.active ? 'bg-dark text-white shadow-md hover:scale-105 active:scale-95' : 'text-mute hover:bg-tint hover:text-sea') + '">' + ic(item.id) + '</a>';
     }).join('') +
     '<div class="hidden lg:block flex-1 min-h-[30px]"></div>' +
-    '<button aria-label="Pengaturan" class="' + B + 'text-mute hover:bg-tint hover:text-sea">' + ic('set') + '</button>' +
-    '<button aria-label="Keluar" class="' + B + 'text-mute hover:bg-tint hover:text-bad">' + ic('out') + '</button>' +
-    '<div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-gradient-to-br from-sea to-deep border-2 border-white/70 shadow-sm grid place-items-center text-white font-bold text-xs"><span>SW</span></div>';
+    '<a href="settings.html" aria-label="Pengaturan" title="Pengaturan Ambang Batas Sensor" class="' + B + (isSettings ? 'bg-dark text-white shadow-md hover:scale-105 active:scale-95' : 'text-mute hover:bg-tint hover:text-sea') + '">' + ic('set') + '</a>' +
+    '<a href="index.html" aria-label="Keluar" title="Keluar Sesi" class="' + B + 'text-mute hover:bg-tint hover:text-bad">' + ic('out') + '</a>' +
+    '<a href="profile.html" title="Profil Administrator Sawarna" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-dark border-2 border-white/70 shadow-sm grid place-items-center text-white font-bold text-xs cursor-pointer hover:ring-2 ring-sea transition-all"><span>SW</span></a>';
   }
 
   var paramData = {
